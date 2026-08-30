@@ -1,0 +1,7 @@
+# Obsidian's local UI and cache state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache/
+
+# Local Obsidian trash
+.trash/
