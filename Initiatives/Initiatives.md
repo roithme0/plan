@@ -12,4 +12,11 @@ No active initiatives have been documented yet.
 
 ## Planned
 
-No planned initiatives have been documented yet.
+- [[AI-assisted Recipe Optimization]]
+- [[Recipe and Ingredient Images]]
+- [[Universal Agent Foundation]]
+- [[Read-only Project Access for the Agent]]
+
+## Exploring
+
+- [[Controlled Agent Actions]]

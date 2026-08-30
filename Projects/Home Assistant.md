@@ -16,14 +16,18 @@ A Home Assistant instance is running in the network.
 
 ## Direction
 
-To be developed as its relationships with other projects become clearer.
+Remain authoritative for home state and automation while exposing selected data and actions to the universal agent through explicit, authorized interfaces.
 
 ## Ecosystem relationships
 
 See [[System Overview]].
 
-## Candidate extensions
+## Related initiatives
 
-## Active initiatives
+- [[Read-only Project Access for the Agent]] — planned
+- [[Controlled Agent Actions]] — exploring
 
 ## Open questions
+
+- Which entities and state should the agent initially be allowed to read?
+- Which actions should eventually be allowed, and which should require confirmation?

@@ -16,6 +16,6 @@ last_reviewed: {{date}}
 
 ## Candidate extensions
 
-## Active initiatives
+## Related initiatives
 
 ## Open questions
