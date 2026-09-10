@@ -12,6 +12,7 @@ No active initiatives have been documented yet.
 
 ## Planned
 
+- [[Recipe Versioning and Drafts]]
 - [[AI-assisted Recipe Optimization]]
 - [[Recipe and Ingredient Images]]
 - [[Universal Agent Foundation]]
