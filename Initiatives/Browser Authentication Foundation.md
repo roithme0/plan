@@ -106,6 +106,15 @@ Both remain valid candidates. The decision should be made from concrete deployme
 - Which login and logout semantics are required for a future multi-application SSO experience?
 - How should the selected pattern support an embedded shared agent chat UI?
 
+## Evaluation references
+
+- [Microsoft Entra plans and pricing](https://www.microsoft.com/en-us/security/business/microsoft-entra-pricing)
+- [Microsoft Entra External ID pricing](https://azure.microsoft.com/en-us/pricing/details/microsoft-entra-external-id/)
+- [authentik pricing and open-source edition](https://goauthentik.io/pricing/)
+- [Keycloak](https://www.keycloak.org/)
+- [ZITADEL pricing](https://zitadel.com/pricing)
+- [Auth0 pricing](https://auth0.com/pricing)
+
 ## Next step
 
 Compare Entra ID Free and the strongest self-hosted alternative against the expected user onboarding and deployment topology, then define a Kochwiki-local authentication specification for the selected provider and browser pattern.
