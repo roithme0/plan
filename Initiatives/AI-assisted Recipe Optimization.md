@@ -42,6 +42,8 @@ The exact chat and proposal UI remains open. The first implementation should be 
 
 ## Safety boundary
 
+- Recipe editing conversations are available only to authenticated users.
+- The AI acts on behalf of the authenticated user and is limited by that user's recipe permissions.
 - The AI Service has no direct access to the Kochwiki database.
 - The AI may request creation of a new draft through a bounded Kochwiki capability.
 - The AI may not overwrite or publish the active recipe version.
@@ -67,6 +69,7 @@ The exact chat and proposal UI remains open. The first implementation should be 
 ## Dependencies
 
 - [[Recipe Versioning and Drafts]]
+- Reliable user authentication and delegated user context
 - An authenticated service-to-service interface
 - A bounded draft-creation capability in Kochwiki
 - A recipe proposal format that Kochwiki can validate and render

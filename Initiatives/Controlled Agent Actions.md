@@ -1,7 +1,7 @@
 ---
 type: initiative
 status: exploring
-last_reviewed: 2026-08-30
+last_reviewed: 2026-09-10
 projects:
   - "[[AI Service]]"
   - "[[Kochwiki]]"
@@ -21,27 +21,32 @@ Move from an informational assistant to a useful ecosystem interface while retai
 ## Scope
 
 - Add actions only after read-only integrations are established
+- Run agent interactions only on behalf of an authenticated user
+- Authorize every tool call against the represented user's permissions and the tool's own narrower scope
 - Allowlist actions and resources per service
-- Use dedicated machine identities and scoped authorization
+- Use dedicated machine identities without treating them as independent user authority
 - Let each domain service validate and execute its own actions
-- Audit requested and executed actions
+- Audit the authenticated user, requested action, agent or machine identity, and execution result
 - Require confirmation according to the consequence of an action
 
 ## Out of scope
 
+- Anonymous access to project data or actions
+- Giving the AI Service permissions that no authenticated user supplied
 - Direct database, filesystem, or unrestricted network access
 - General administrative access
 - Assuming every action has the same risk or confirmation policy
 
 ## Project roles
 
-- [[AI Service]] interprets intent, requests confirmation when required, and invokes authorized tools.
-- [[Kochwiki]] validates and executes allowed recipe-domain changes.
-- [[Home Assistant]] validates and executes allowed home actions.
+- [[AI Service]] interprets intent, preserves the authenticated user context, requests confirmation when required, and invokes authorized tools.
+- [[Kochwiki]] validates both user and tool permissions and executes allowed recipe-domain changes.
+- [[Home Assistant]] validates both user and tool permissions and executes allowed home actions.
 
 ## Dependencies
 
 - [[Read-only Project Access for the Agent]]
+- Reliable human authentication and delegated user context
 - Authentication, authorization, auditing, and confirmation policies
 - Explicit action allowlists for each participating project
 
@@ -49,7 +54,9 @@ Move from an informational assistant to a useful ecosystem interface while retai
 
 - Which single action should be introduced first?
 - Which actions may run immediately, which require confirmation, and which should remain unavailable?
+- How should authenticated user context be delegated to and verified across service boundaries?
+- How should machine identity and represented user identity appear together in the audit trail?
 
 ## Next step
 
-Defer implementation until the read-only integrations are working; then define one low-risk action and its complete authorization and audit path.
+Defer implementation until the read-only integrations and reliable human authentication are working; then define one low-risk action and its complete authorization and audit path.
