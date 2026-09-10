@@ -27,7 +27,7 @@ Use shared AI capabilities to improve recipes while keeping exploration conversa
 - A proposal remains part of the chat and is not automatically stored as a draft or active recipe version.
 - When satisfied, the user may ask to save the current or an earlier proposal as a new draft.
 
-The exact chat and proposal UI remains open. The first implementation should be deliberately simple and mobile-first.
+The exact chat and proposal UI remains open. The first implementation should be deliberately simple and mobile-first. It may use a shared AI Service chat foundation embedded in Kochwiki, but this initiative does not decide the embedding mechanism or move ownership of recipe presentation into the AI Service; see [[Shared Agent Chat UI and Domain Rendering]].
 
 ## Scope
 
@@ -47,6 +47,7 @@ The exact chat and proposal UI remains open. The first implementation should be 
 - The AI may not overwrite or publish the active recipe version.
 - The AI may not accept or discard drafts and may not delete recipes, versions, drafts, or chat proposals.
 - Kochwiki validates every proposal before persisting it as a draft.
+- Rendering a recipe proposal does not grant the chat UI or agent additional mutation rights.
 
 ## Out of scope
 
@@ -55,11 +56,13 @@ The exact chat and proposal UI remains open. The first implementation should be 
 - Treating every intermediate chat proposal as a persisted recipe draft
 - Choosing a specific model or provider at the ecosystem-planning level
 - Finalizing the detailed chat interface in this initiative
+- Deciding the long-term ownership or distribution mechanism for the recipe renderer
 
 ## Project roles
 
 - [[Kochwiki]] owns recipe data, draft and version history, proposal validation, diff presentation, acceptance, discard, and persistence.
 - [[AI Service]] manages the editing conversation and produces explainable, structured recipe proposals through a stable service interface.
+- Ownership of reusable recipe rendering outside Kochwiki remains an open architectural question.
 
 ## Dependencies
 
@@ -69,6 +72,10 @@ The exact chat and proposal UI remains open. The first implementation should be 
 - A recipe proposal format that Kochwiki can validate and render
 - A way to associate chat proposals with the recipe version used as their starting point
 
+## Related ideas
+
+- [[Shared Agent Chat UI and Domain Rendering]]
+
 ## Open questions
 
 - Which predefined optimization actions should the first version support?
@@ -76,6 +83,7 @@ The exact chat and proposal UI remains open. The first implementation should be 
 - How should the UI identify and restore an earlier proposal in a conversation?
 - What provenance should be retained with the chat, proposal, and resulting draft?
 - How should the AI handle an active recipe that changes during an editing conversation?
+- Can Kochwiki and the universal agent share a recipe renderer without duplicating domain UI or coupling the AI Service to Kochwiki?
 
 ## Next step
 
