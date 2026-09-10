@@ -24,10 +24,14 @@ The current backend prevents deletion of foodstuffs that are referenced by a rec
 
 - Complete the current review, refactoring, and code-quality cleanup
 - Address relevant performance issues
-- Decide and implement the intended remembered-user behavior
-- Establish reliable authentication before enforcing multi-user ownership or exposing data to the AI Service
+- Define remembered-user behavior as part of a real authenticated session
+- Implement [[Browser Authentication Foundation]] before enforcing multi-user ownership or exposing data to the AI Service
 - Introduce recipe versioning and drafts before AI-assisted editing can persist proposals
 - Treat human authentication and machine identities as separate security concerns
+
+## Authentication direction
+
+Kochwiki will authenticate browser users through an external OIDC provider under [[DEC-002 External OIDC Provider for Human Authentication]]. Microsoft Entra ID Free is the current preference, while provider selection and the choice between a PKCE-based SPA and a Backend-for-Frontend session remain open.
 
 ## Data ownership direction
 
@@ -49,6 +53,7 @@ See [[System Overview]].
 
 ## Related initiatives
 
+- [[Browser Authentication Foundation]] — planned
 - [[Recipe Versioning and Drafts]] — planned
 - [[AI-assisted Recipe Optimization]] — planned
 - [[Recipe and Ingredient Images]] — planned
@@ -62,5 +67,5 @@ See [[System Overview]].
 ## Open questions
 
 - Should future cooking recommendations use only saved recipes, or also an inventory of ingredients actually available at home?
-- What form of human authentication should eventually replace or complement the current user selection?
+- Should Kochwiki use a PKCE-based SPA or a Backend-for-Frontend session?
 - Should recipe collaboration, ownership transfer, or copying another user's recipe be supported later?

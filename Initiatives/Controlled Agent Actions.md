@@ -45,8 +45,9 @@ Move from an informational assistant to a useful ecosystem interface while retai
 
 ## Dependencies
 
+- [[Browser Authentication Foundation]]
 - [[Read-only Project Access for the Agent]]
-- Reliable human authentication and delegated user context
+- Delegated user context across service boundaries
 - Authentication, authorization, auditing, and confirmation policies
 - Explicit action allowlists for each participating project
 
