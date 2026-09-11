@@ -16,7 +16,7 @@ Explore the AI Service as a combination of two separately usable parts:
 - A backend for model access, ephemeral or persistent conversations, agent orchestration, streaming, structured outputs, and bounded tool calls
 - A reusable chat UI that can be embedded into domain applications and can also become the interaction surface for the universal agent
 
-This is a direction to investigate, not a final decision about framework, repository, or release boundaries.
+The first integration now confirms an Angular library owned by the AI Service repository and consumed by Kochwiki at build time. Registry, publication, and release details remain deferred. Longer-term framework and deployment boundaries remain exploratory.
 
 ## Motivation
 
@@ -51,11 +51,12 @@ For the first [[AI-assisted Recipe Optimization]] integration, Kochwiki retains 
 
 ## Packaging direction for the first integration
 
-A build-time UI package or framework-compatible integration is preferred for the first Kochwiki integration because Kochwiki must inject its own renderer into the conversation. A separately hosted iframe would make direct reuse of a host-owned Angular component difficult and would introduce cross-boundary messaging and duplicated state.
+The first Kochwiki integration uses a reusable Angular library owned by the AI Service repository and consumed at build time. Kochwiki supplies its proposal renderer to this UI library through a typed extension point; no renderer is supplied to the backend. A separately hosted iframe is not the initial direction because it would make direct reuse of a host-owned Angular component difficult and introduce cross-boundary messaging and duplicated state.
 
-This preference does not yet decide whether the long-term shared UI is:
+The library exposes a deliberately narrow public API and must not leak internal backend DTOs or private chat implementation details. Its package registry, publication automation, release workflow, and local cross-repository development mechanism will be selected when Kochwiki consumption becomes imminent.
 
-- A framework-specific package
+This first-integration decision does not yet decide whether the long-term shared UI evolves into:
+
 - A framework-neutral core with host adapters
 - A Web Component with suitable renderer extension points
 - A common chat core used by distinct application-specific shells
@@ -64,7 +65,7 @@ The fact that the chat UI belongs to the AI Service describes product and source
 
 ## Kochwiki first use
 
-- Kochwiki hosts the active recipe-editing session and retains the ephemeral conversation state initially.
+- The AI Service retains initialization snapshots, active conversation state, proposals, lineage, and provenance in a short-lived session; Kochwiki does not provide durable chat persistence.
 - The AI Service chat package owns generic conversation behavior, streaming, cancellation, tool presentation, and artifact placement.
 - Kochwiki registers the recipe proposal renderer and supplies bounded domain actions.
 - All proposals remain visible in the linear chat history.
@@ -98,7 +99,7 @@ If the universal agent later needs the same rich recipe rendering, a possible ap
 ## Open questions
 
 - Which responsibilities belong to the reusable chat UI and which belong to each host application?
-- Which packaging mechanism should be used for the first Angular integration?
+- Which registry, publication automation, release workflow, and local-development mechanism should distribute the Angular library when consumption becomes imminent?
 - How should renderer registration and narrow host actions be represented?
 - How are independently distributed domain renderers versioned and trusted?
 - How can one renderer later work both inside its domain application and in the universal agent?

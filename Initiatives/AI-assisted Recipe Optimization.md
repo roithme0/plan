@@ -20,7 +20,7 @@ Use shared AI capabilities to improve recipes while keeping exploration conversa
 ## Experience direction
 
 - A user starts AI editing from the view of one existing recipe.
-- The user may open an empty chat and write the first request, or start from a predefined action such as optimizing for macronutrients or gut health.
+- The user starts with the initial gut-health improvement direction for a person with diagnosed irritable bowel syndrome (`Reizdarm`). Its detailed optimization criteria are defined separately before implementation.
 - The assistant may answer questions or ask for clarification without producing a recipe proposal.
 - A broad request such as "improve this recipe" should normally be clarified before producing a proposal.
 - When the assistant proposes a changed recipe, it returns the complete recipe rather than a patch or an incomplete set of changes.
@@ -39,8 +39,18 @@ The first implementation should be deliberately simple and mobile-first. It may 
 - Consecutive messages, questions, refinements, and multiple proposals are supported while the session is open.
 - Persisting, listing, reopening, or reading previous chats is not required initially.
 - Reloading or closing the chat may discard the conversation and all proposals that have not been saved as Kochwiki drafts.
-- The initial AI Service should remain stateless where practical: the client retains the active conversation and supplies the relevant history with each request.
+- The AI Service retains the active conversation, initialization snapshots, validated proposals, lineage, and capability provenance as short-lived session state.
 - The service may limit retained context or tool execution for operational safety, but there is no product rule restricting an assistant turn to one proposal.
+- Session expiry is explicit to the caller. Durable history, reopening, and recovery of expired proposals are not required initially.
+
+## Foodstuff boundary
+
+- Kochwiki supplies the complete source-recipe snapshot and a snapshot of all foodstuffs currently available for proposals when it initializes the session.
+- Proposal ingredients reference foodstuffs from that snapshot by opaque external identifier.
+- The AI Service rejects a proposal that references a foodstuff outside the supplied snapshot.
+- The snapshot contains only the fields required for selection and explanation; Kochwiki remains authoritative for the catalogue.
+- A bounded foodstuff search or lookup tool is a possible later iteration when supplying the full catalogue no longer fits the configured context budget.
+- Proposing, resolving, or creating foodstuffs that are not already available in Kochwiki is not part of this initiative.
 
 ## Proposal model
 
@@ -57,8 +67,10 @@ The first implementation should be deliberately simple and mobile-first. It may 
 ## Skills and proposal creation
 
 - Optimization directions are implemented as focused, versioned skills or equivalent internal capability modules in the AI Service.
-- A skill supplies instructions, constraints, evaluation criteria, and strategies for a direction such as reducing calories, increasing protein, or improving gut friendliness.
-- The service selects one or more relevant skills from the user's request; a request does not have to produce a recipe proposal.
+- The initial and only direction is gut-health recipe improvement for a person with diagnosed irritable bowel syndrome (`Reizdarm`). Dietary exclusions, calorie targets, protein targets, and other optimization directions are not initial candidates.
+- The concrete nutritional signals, symptom profiles, protocols, scoring rules, and deterministic criteria are deliberately deferred to separate evidence-informed work.
+- The capability may suggest recipe changes within those eventual criteria, but must not diagnose, treat, or claim to improve the underlying condition.
+- A request does not have to produce a recipe proposal; the assistant may clarify the user's intent first.
 - Applied skill identifiers and versions should be retained as proposal provenance.
 - The model is responsible for conversational and recipe content, while deterministic application metadata and lifecycle behavior remain in service code.
 - The agent submits structured recipe candidates through a proposal tool rather than encoding them only in conversational prose.
@@ -89,21 +101,27 @@ Both the proposal card action and an explicit conversational request use the sam
 
 ## Chat UI and recipe rendering
 
-The AI Service may provide a reusable chat UI or chat UI package that owns generic conversation behavior, streaming, tool status, and typed artifact slots. Kochwiki retains the domain-specific recipe presentation.
+The AI Service provides a reusable Angular chat UI library that owns generic conversation behavior, streaming, tool status, and typed artifact slots. Kochwiki consumes it at build time and retains the domain-specific recipe presentation.
 
 - The AI Service defines a versioned artifact envelope and a renderer registry or equivalent host-extension point.
 - Kochwiki registers its own recipe proposal component for the Kochwiki recipe artifact type.
 - The shared chat UI does not import or own Kochwiki recipe code.
 - Kochwiki's renderer provides domain actions such as "Continue from here" and "Save as draft".
 - An unknown artifact type has a generic fallback representation.
-- For the first Kochwiki integration, a build-time UI package or framework-compatible integration is preferred over a separately hosted iframe, because the host must inject its domain renderer.
+- Kochwiki supplies its renderer to the chat UI through a typed host extension point; it does not supply a renderer to the backend.
+- A build-time Angular library is confirmed for the first Kochwiki integration. A separately hosted iframe is not the initial direction because the host must inject its domain renderer and bounded actions.
+- The library keeps a narrow public API and does not expose internal backend DTOs or private chat implementation details.
+- Package registry, publication automation, release workflow, and local cross-repository development mechanics are deferred until Kochwiki consumption is imminent.
 - Reusing the same renderer in a future universal-agent UI may later require a separately consumable Kochwiki renderer package, but that is not required for the first implementation.
 
 ## Scope
 
 - Start recipe-scoped AI editing through free-form chat or a small set of predefined optimization actions
 - Provide the original recipe snapshot, its stable version reference, and relevant constraints as context
-- Support an ephemeral multi-turn editing session without chat persistence
+- Provide all currently available Kochwiki foodstuffs as a session-initialization snapshot
+- Support an ephemeral multi-turn editing session held as short-lived AI Service state without durable chat persistence
+- Restrict proposals to foodstuffs in the supplied snapshot
+- Initially support only the versioned IBS-focused gut-health improvement direction
 - Return complete, structured recipe proposals with explanations
 - Support multiple proposals in one assistant turn
 - Support iterative refinement and deterministic selection of the original recipe or any earlier proposal as the next basis
@@ -135,6 +153,10 @@ The AI Service may provide a reusable chat UI or chat UI package that owns gener
 - Choosing a specific model or provider at the ecosystem-planning level
 - Finalizing the detailed visual design of the chat interface
 - Making the Kochwiki recipe renderer available to the universal agent in the first implementation
+- Foodstuff lookup tools and proposing or creating unavailable foodstuffs
+- Dietary exclusions or optimization directions other than IBS-focused gut health
+- Defining the detailed IBS-focused optimization criteria in this initiative
+- Handling source-recipe changes during an open session
 
 ## Project roles
 
@@ -166,13 +188,17 @@ The generic AI Service chat, model adapter, streaming, tool loop, and artifact e
 
 ## Open questions
 
-- Which predefined optimization skills should the first version support?
+- What evidence-informed definition should govern the IBS-focused gut-health direction?
+- Which eventual optimization criteria are deterministic, model-judged, or explanatory only?
+- What minimum recipe and foodstuff fields are required for useful and valid proposals?
+- At what catalogue-size or token-budget threshold should the upfront snapshot be replaced or supplemented by lookup tools?
 - How should active conversation context be bounded as a session grows?
+- How long should short-lived session state survive, and should activity extend its expiry?
 - What exact recipe proposal schema and skill provenance must cross the service boundary?
-- How should the system react when the active Kochwiki recipe changes during an open editing session?
-- Which frontend packaging mechanism best supports the initial renderer registry?
+- What generic renderer interface, fallback representation, and bounded host actions are sufficient for the first proposal artifact version?
+- Which package registry and release workflow should distribute the Angular library when integration becomes imminent?
 - Can Kochwiki and the universal agent later share a recipe renderer without duplicating domain UI or coupling the AI Service to Kochwiki?
 
 ## Next step
 
-Begin the generic AI Service foundation with a provider-neutral model adapter and a streamed, ephemeral, multi-turn chat protocol designed for multiple tool calls and typed artifacts. Define the concrete recipe proposal contract and Kochwiki renderer integration afterward.
+Define the evidence-informed IBS-focused optimization criteria and the minimum recipe, foodstuff-snapshot, proposal, session, and renderer contracts. The generic AI Service foundation can proceed in parallel with a provider-neutral model adapter and a streamed, short-lived, multi-turn chat protocol designed for multiple tool calls and typed artifacts.
