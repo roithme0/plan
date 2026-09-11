@@ -1,7 +1,7 @@
 ---
 type: idea
 status: exploring
-last_reviewed: 2026-09-10
+last_reviewed: 2026-09-11
 projects:
   - "[[AI Service]]"
   - "[[Kochwiki]]"
@@ -13,60 +13,99 @@ projects:
 
 Explore the AI Service as a combination of two separately usable parts:
 
-- A backend for model access, conversations, agent orchestration, structured outputs, and bounded tool calls
+- A backend for model access, ephemeral or persistent conversations, agent orchestration, streaming, structured outputs, and bounded tool calls
 - A reusable chat UI that can be embedded into domain applications and can also become the interaction surface for the universal agent
 
-This is a direction to investigate, not a decision about packaging, deployment, framework, or repository boundaries.
+This is a direction to investigate, not a final decision about framework, repository, or release boundaries.
 
 ## Motivation
 
-Kochwiki needs a focused AI editing conversation, while the longer-term universal agent needs a general conversation surface. Sharing the core chat experience could avoid separate implementations and make capabilities such as streaming, conversation history, tool status, and structured results consistent across applications.
+Kochwiki needs a focused AI editing conversation, while the longer-term universal agent needs a general conversation surface. Sharing the core chat experience could avoid separate implementations and make capabilities such as streaming, conversation history, cancellation, tool status, and structured results consistent across applications.
 
 At the same time, a generic chat UI must be able to present domain-specific results. A future universal agent should render a recipe as a recipe rather than reducing it to plain text, even when the conversation did not start inside Kochwiki.
 
-## Tentative model
+## Content and artifact model
 
-- The AI Service backend returns typed, structured artifacts in addition to conversational text.
+An assistant turn is an ordered stream of content and lifecycle events rather than a single text response. It may contain conversational text, tool status, errors, and multiple typed artifacts.
+
+- The AI Service backend returns typed, versioned artifact envelopes in addition to conversational text.
+- Service code assigns deterministic artifact identifiers, ordering, timestamps, and references.
+- The model supplies organic content and structured domain candidates but does not invent application identity or lifecycle metadata.
+- One assistant turn may contain several artifacts of the same type.
 - The shared chat UI understands the artifact envelope and conversation behavior without owning every domain representation.
-- Domain-specific renderers may be registered or supplied separately.
-- Kochwiki may embed the shared chat UI for recipe editing while retaining ownership of recipe data and lifecycle.
-- The universal agent UI may use the same chat foundation and load a recipe renderer when it receives a recipe artifact.
 - A generic fallback representation remains available when no specialized renderer exists.
 
-For example, a recipe result could be identified as a typed artifact associated with the recipe version on which it is based. The exact schema is intentionally not defined here.
+For example, a recipe proposal can be identified as a typed artifact associated with the recipe version or earlier proposal on which it is based. The exact domain schema belongs to the corresponding integration.
+
+## Renderer registry
+
+The shared chat UI should expose a renderer registry or equivalent host-extension point.
+
+- A host application associates an artifact type with a domain-owned component.
+- The chat UI selects the registered renderer when displaying an artifact.
+- The renderer receives validated artifact data and a deliberately narrow set of host actions.
+- Rendering an artifact does not grant permission to mutate the underlying domain object.
+- Unknown artifacts use the generic fallback.
+
+For the first [[AI-assisted Recipe Optimization]] integration, Kochwiki retains its recipe proposal component and registers it with the embedded chat UI. The recipe renderer provides domain-specific actions such as selecting a proposal as the basis for the next request or saving it as a draft. The AI Service does not import or own Kochwiki recipe code.
+
+## Packaging direction for the first integration
+
+A build-time UI package or framework-compatible integration is preferred for the first Kochwiki integration because Kochwiki must inject its own renderer into the conversation. A separately hosted iframe would make direct reuse of a host-owned Angular component difficult and would introduce cross-boundary messaging and duplicated state.
+
+This preference does not yet decide whether the long-term shared UI is:
+
+- A framework-specific package
+- A framework-neutral core with host adapters
+- A Web Component with suitable renderer extension points
+- A common chat core used by distinct application-specific shells
+
+The fact that the chat UI belongs to the AI Service describes product and source responsibility; it does not require the UI to be a separately hosted application.
+
+## Kochwiki first use
+
+- Kochwiki hosts the active recipe-editing session and retains the ephemeral conversation state initially.
+- The AI Service chat package owns generic conversation behavior, streaming, cancellation, tool presentation, and artifact placement.
+- Kochwiki registers the recipe proposal renderer and supplies bounded domain actions.
+- All proposals remain visible in the linear chat history.
+- Proposal lineage may reference the original recipe version or an earlier proposal without changing the linear presentation.
+- A future universal agent may initially use the generic fallback or link to Kochwiki when no recipe renderer is installed.
 
 ## Renderer ownership problem
 
-The current Kochwiki frontend already owns the recipe presentation. Moving that rendering into the AI Service would couple a general platform to Kochwiki and risk duplicating domain UI.
+The current Kochwiki frontend already owns recipe presentation. Moving that rendering into the AI Service would couple a general platform to Kochwiki and risk duplicating domain UI.
 
-A possible future approach is a domain-owned renderer package or component that can be consumed by both Kochwiki and the shared chat UI. A renderer registry could select it by artifact type. This remains only one option: distribution, version compatibility, framework interoperability, trust, and runtime discovery have not been resolved.
+If the universal agent later needs the same rich recipe rendering, a possible approach is a separately consumable, domain-owned Kochwiki renderer package. A renderer registry could load it by artifact type. Distribution, version compatibility, framework interoperability, trust, and runtime discovery remain unresolved and are not prerequisites for the first Kochwiki integration.
 
 ## Integration boundary
 
 - Domain services remain authoritative for their data and validate all reads and writes.
 - The agent receives access through a limited set of explicit domain tool calls rather than database, filesystem, or general administrative access.
-- Tool capabilities should express domain intent, such as retrieving a recipe or creating a recipe draft.
-- Concrete tool contracts, authentication, authorization, and audit behavior will be designed separately.
-- Rendering an artifact does not itself grant permission to mutate the underlying domain object.
+- Tool capabilities express domain intent, such as retrieving a recipe or creating a recipe draft.
+- The UI and conversational agent may invoke the same bounded domain action through different user interactions.
+- Concrete tool contracts, authentication, authorization, confirmation, and audit behavior are designed with the corresponding initiative.
+- A domain mutation tool should prefer deterministic artifact references over model-reconstructed domain payloads.
 
 ## Alternatives still open
 
 - A shared Web Component embedded by domain frontends
 - A framework-neutral UI package integrated at build time
-- A separately hosted interface embedded through an isolated boundary
+- A common headless chat core with framework-specific adapters
+- A separately hosted interface for hosts that do not require injected domain components
 - Host-provided renderers, domain-owned renderer packages, or server-driven presentation
 - A common chat core with distinct application-specific shells instead of one complete shared UI
 
 ## Open questions
 
 - Which responsibilities belong to the reusable chat UI and which belong to each host application?
-- Who owns the canonical recipe renderer?
-- How are domain renderers discovered, distributed, versioned, and trusted?
-- How can one renderer work both inside its domain application and in the universal agent?
-- How should authentication and conversation context cross an embedding boundary?
+- Which packaging mechanism should be used for the first Angular integration?
+- How should renderer registration and narrow host actions be represented?
+- How are independently distributed domain renderers versioned and trusted?
+- How can one renderer later work both inside its domain application and in the universal agent?
+- How should authentication and conversation context cross a separately hosted embedding boundary if one is introduced?
 - What generic fallback should be used for an unknown artifact type?
 - Should the AI Service remain one repository and deployment, or contain separately released backend and UI packages?
 
 ## Next step
 
-Use the first Kochwiki AI editing flow to identify the smallest reusable chat and artifact boundaries, while postponing a commitment to a renderer plugin model or deployment mechanism.
+Use the first Kochwiki AI editing flow to implement the smallest streamed chat, typed artifact, and host renderer boundaries. Keep the recipe renderer inside Kochwiki initially and postpone a general runtime renderer plugin system.
