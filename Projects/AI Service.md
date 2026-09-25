@@ -56,6 +56,7 @@ See [[System Overview]].
 - [[Universal Agent Foundation]] — planned
 - [[Read-only Project Access for the Agent]] — planned
 - [[Controlled Agent Actions]] — exploring
+- [[Photo-assisted Foodstuff Nutrition Entry]] — exploring
 
 ## Open questions
 

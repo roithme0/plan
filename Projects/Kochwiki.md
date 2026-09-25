@@ -45,7 +45,7 @@ See [[DEC-001 Shared Foodstuffs and Owned Recipes]].
 
 ## Direction
 
-Remain independently useful for core recipe management while adding recipe history, drafts, general image support, and optional AI-assisted features. Manual and AI-generated changes should converge on a shared, user-controlled draft and publication lifecycle. Participate in the wider ecosystem through purposefully designed and authorized APIs.
+Remain independently useful for core recipe management while adding recipe history, drafts, general image support, photo-assisted foodstuff nutrition entry, and optional AI-assisted features. Manual and AI-generated changes should converge on a shared, user-controlled draft and publication lifecycle. Participate in the wider ecosystem through purposefully designed and authorized APIs.
 
 ## Ecosystem relationships
 
@@ -59,6 +59,8 @@ See [[System Overview]].
 - [[Recipe and Ingredient Images]] — planned
 - [[Read-only Project Access for the Agent]] — planned
 - [[Controlled Agent Actions]] — exploring
+
+- [[Photo-assisted Foodstuff Nutrition Entry]] — exploring
 
 ## Related ideas
 
