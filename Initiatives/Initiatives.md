@@ -22,3 +22,4 @@ No active initiatives have been documented yet.
 ## Exploring
 
 - [[Controlled Agent Actions]]
+- [[Photo-assisted Foodstuff Nutrition Entry]]
