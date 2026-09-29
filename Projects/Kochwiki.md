@@ -1,7 +1,7 @@
 ---
 type: project
 status: active
-last_reviewed: 2026-09-10
+last_reviewed: 2026-09-29
 ---
 
 # Kochwiki
@@ -12,22 +12,19 @@ Provide a private, mobile-first application for managing recipes and their ingre
 
 ## Current role
 
-Kochwiki currently supports recipe and foodstuff management, including ordered ingredients, preparation steps, and calculated recipe nutrition. Users can create recipes and edit an existing recipe from its detail page through a full-screen recipe edit dialog.
+On Kochwiki v2's `staging` branch, the Angular frontend and FastAPI backend support recipe and foodstuff management, ordered ingredients and steps, and calculated nutrition. Recipes now have active, draft, and historical versions under a lineage. Manual edits can publish a new active version or create and update a draft; drafts can be published or discarded. Retained versions keep live foodstuff references, and any such reference blocks foodstuff deletion. The API lists historical versions, but the recipe UI does not yet offer a history browser or a draft-versus-active diff.
 
-The edit dialog currently loads the active recipe and submits changes through the backend recipe update endpoint. Updates replace the stored recipe state directly; recipe versions and drafts do not yet exist in the persistence model.
+Active recipes and drafts can open a recipe-scoped improvement chat. Kochwiki supplies a fixed recipe and foodstuff snapshot to the AI Service, renders the original and generated recipe artifacts through its own presentation, and can explicitly save a proposal as a new draft. The AI Service remains optional for ordinary recipe management.
 
-The current frontend contains a cookie-based attempt to restore the selected user, but it is not authentication and may not yet satisfy the intended remembered-user behavior. The backend API is not protected and must not be exposed to agents or other untrusted clients in its current form.
-
-The current backend prevents deletion of foodstuffs that are referenced by a recipe and enforces uniqueness for an exact name-and-brand combination. Authenticated multi-user ownership and change provenance are not yet represented.
+The browser still uses temporary user selection rather than authentication. The backend does not enforce recipe ownership or owner-only authorization, and foodstuff creator/change provenance is not yet represented. The current private-network deployment boundary should not be mistaken for those controls.
 
 ## Near-term focus
 
-- Complete the current review, refactoring, and code-quality cleanup
-- Address relevant performance issues
-- Define remembered-user behavior as part of a real authenticated session
-- Implement [[Browser Authentication Foundation]] before enforcing multi-user ownership or exposing data to the AI Service
-- Introduce recipe versioning and drafts before AI-assisted editing can persist proposals
-- Treat human authentication and machine identities as separate security concerns
+- Complete and verify the integrated recipe-chat and proposal-to-draft flow
+- Add history browsing and a draft-versus-active comparison to the existing version lifecycle
+- Implement [[Browser Authentication Foundation]] and then enforce recipe ownership and shared-foodstuff provenance
+- Keep human authentication and machine identities as separate security concerns
+- Continue general image and other planned work on their own initiative timelines
 
 ## Authentication direction
 
@@ -45,7 +42,7 @@ See [[DEC-001 Shared Foodstuffs and Owned Recipes]].
 
 ## Direction
 
-Remain independently useful for core recipe management while adding recipe history, drafts, general image support, photo-assisted foodstuff nutrition entry, and optional AI-assisted features. Manual and AI-generated changes should converge on a shared, user-controlled draft and publication lifecycle. Participate in the wider ecosystem through purposefully designed and authorized APIs.
+Remain independently useful for core recipe management while completing the recipe history and draft review experience, general image support, photo-assisted foodstuff nutrition entry, and optional AI-assisted features. Manual and AI-generated changes should converge on a shared, user-controlled draft and publication lifecycle. Participate in the wider ecosystem through purposefully designed and authorized APIs.
 
 ## Ecosystem relationships
 
@@ -54,12 +51,11 @@ See [[System Overview]].
 ## Related initiatives
 
 - [[Browser Authentication Foundation]] — planned
-- [[Recipe Versioning and Drafts]] — planned
-- [[AI-assisted Recipe Optimization]] — planned
+- [[Recipe Versioning and Drafts]] — active
+- [[AI-assisted Recipe Optimization]] — active
 - [[Recipe and Ingredient Images]] — planned
 - [[Read-only Project Access for the Agent]] — planned
 - [[Controlled Agent Actions]] — exploring
-
 - [[Photo-assisted Foodstuff Nutrition Entry]] — exploring
 
 ## Related ideas
