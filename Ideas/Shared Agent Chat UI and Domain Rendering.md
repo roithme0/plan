@@ -1,7 +1,7 @@
 ---
 type: idea
 status: exploring
-last_reviewed: 2026-09-11
+last_reviewed: 2026-09-29
 projects:
   - "[[AI Service]]"
   - "[[Kochwiki]]"
@@ -16,13 +16,19 @@ Explore the AI Service as a combination of two separately usable parts:
 - A backend for model access, ephemeral or persistent conversations, agent orchestration, streaming, structured outputs, and bounded tool calls
 - A reusable chat UI that can be embedded into domain applications and can also become the interaction surface for the universal agent
 
-The first integration now confirms an Angular library owned by the AI Service repository and consumed by Kochwiki at build time. Registry, publication, and release details remain deferred. Longer-term framework and deployment boundaries remain exploratory.
+The first integration now uses an Angular library owned by the AI Service repository and consumed by Kochwiki at build time. It is published through GitHub Packages, with release automation and a local linking workflow. The broader framework and deployment boundaries remain exploratory.
 
 ## Motivation
 
 Kochwiki needs a focused AI editing conversation, while the longer-term universal agent needs a general conversation surface. Sharing the core chat experience could avoid separate implementations and make capabilities such as streaming, conversation history, cancellation, tool status, and structured results consistent across applications.
 
 At the same time, a generic chat UI must be able to present domain-specific results. A future universal agent should render a recipe as a recipe rather than reducing it to plain text, even when the conversation did not start inside Kochwiki.
+
+## Implemented first integration
+
+On the `staging` branches, the shared `@roithme0/chat-ui` package offers separate UI and conversation entry points. Kochwiki imports it for recipe improvement and registers a host-owned Angular template for the `kochwiki-recipe` artifact type. That template uses Kochwiki's shared recipe presentation for the original snapshot and proposals, with a Kochwiki-owned save-as-draft action on proposals. The library frames artifacts and falls back to a generic JSON view for unknown types; its conversation controller handles completed-turn HTTP requests and recovery.
+
+The first integration does not stream responses or support cancellation. It has not established a portable domain renderer for a future universal agent.
 
 ## Content and artifact model
 
@@ -53,7 +59,7 @@ For the first [[AI-assisted Recipe Optimization]] integration, Kochwiki retains 
 
 The first Kochwiki integration uses a reusable Angular library owned by the AI Service repository and consumed at build time. Kochwiki supplies its proposal renderer to this UI library through a typed extension point; no renderer is supplied to the backend. A separately hosted iframe is not the initial direction because it would make direct reuse of a host-owned Angular component difficult and introduce cross-boundary messaging and duplicated state.
 
-The library exposes a deliberately narrow public API and must not leak internal backend DTOs or private chat implementation details. Its package registry, publication automation, release workflow, and local cross-repository development mechanism will be selected when Kochwiki consumption becomes imminent.
+The library exposes narrow `/ui` and `/conversation` public entry points. GitHub Packages publication and release automation are established, and a local link supports cross-repository development.
 
 This first-integration decision does not yet decide whether the long-term shared UI evolves into:
 
@@ -66,7 +72,7 @@ The fact that the chat UI belongs to the AI Service describes product and source
 ## Kochwiki first use
 
 - The AI Service retains initialization snapshots, active conversation state, proposals, lineage, and provenance in a short-lived session; Kochwiki does not provide durable chat persistence.
-- The AI Service chat package owns generic conversation behavior, streaming, cancellation, tool presentation, and artifact placement.
+- The AI Service chat package owns generic conversation presentation, artifact placement, and completed-turn conversation control. Streaming, cancellation, and tool-status presentation remain future work.
 - Kochwiki registers the recipe proposal renderer and supplies bounded domain actions.
 - All proposals remain visible in the linear chat history.
 - Proposal lineage may reference the original recipe version or an earlier proposal without changing the linear presentation.
@@ -99,8 +105,6 @@ If the universal agent later needs the same rich recipe rendering, a possible ap
 ## Open questions
 
 - Which responsibilities belong to the reusable chat UI and which belong to each host application?
-- Which registry, publication automation, release workflow, and local-development mechanism should distribute the Angular library when consumption becomes imminent?
-- How should renderer registration and narrow host actions be represented?
 - How are independently distributed domain renderers versioned and trusted?
 - How can one renderer later work both inside its domain application and in the universal agent?
 - How should authentication and conversation context cross a separately hosted embedding boundary if one is introduced?
@@ -109,4 +113,4 @@ If the universal agent later needs the same rich recipe rendering, a possible ap
 
 ## Next step
 
-Use the first Kochwiki AI editing flow to implement the smallest streamed chat, typed artifact, and host renderer boundaries. Keep the recipe renderer inside Kochwiki initially and postpone a general runtime renderer plugin system.
+Use the implemented Kochwiki flow to assess whether the host template and artifact contract are sufficient for another domain. Define how a future universal-agent UI could reuse rich recipe rendering without coupling the shared package to Kochwiki; treat streaming and cancellation as separate additions.

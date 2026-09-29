@@ -1,7 +1,7 @@
 ---
 type: initiative
 status: planned
-last_reviewed: 2026-09-10
+last_reviewed: 2026-09-29
 projects:
   - "[[AI Service]]"
 ---
@@ -15,6 +15,10 @@ The AI Service provides an initial universal agent that can answer generic quest
 ## Motivation
 
 Establish the conversational and tool-use foundation before granting the agent access to project data or actions.
+
+## Current foundation
+
+The AI Service `staging` branch already has a generic, session-based conversation HTTP contract, an ephemeral session store, bounded tool orchestration, typed artifacts, a reusable chat UI package, and a deterministic demo agent with example tools. The model-backed agent is configured for recipe improvement, not general questions. There is no universal agent configuration or live weather tool yet; implementation of this initiative has not begun as a distinct user-facing outcome.
 
 ## Scope
 
@@ -48,4 +52,4 @@ Establish the conversational and tool-use foundation before granting the agent a
 
 ## Next step
 
-Define the smallest agent, conversation, and tool boundary needed for generic questions and one live weather tool.
+Reuse the existing conversation and tool boundaries to define a generic model-backed agent configuration, select a live weather source, and implement and verify one weather tool and its user-facing interaction.

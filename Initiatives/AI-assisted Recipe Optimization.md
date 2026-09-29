@@ -1,7 +1,7 @@
 ---
 type: initiative
-status: planned
-last_reviewed: 2026-09-11
+status: active
+last_reviewed: 2026-09-29
 projects:
   - "[[Kochwiki]]"
   - "[[AI Service]]"
@@ -16,6 +16,17 @@ A user can iteratively improve one existing recipe in a focused AI editing chat,
 ## Motivation
 
 Use shared AI capabilities to improve recipes while keeping exploration conversational, changes explainable, and control over persistence and publication with the user and Kochwiki.
+
+## Current implementation
+
+On the `staging` branches of Kochwiki v2 and AI Service, the first recipe-scoped flow is integrated:
+
+- Kochwiki opens a chat from an active recipe or draft, initializes a short-lived AI Service session with a fixed source snapshot and the full foodstuff catalogue, and renders the original recipe and complete proposal artifacts through its own recipe presentation.
+- The AI Service provides model-backed multi-turn conversation, bounded proposal tool calls, validation against the supplied catalogue, and typed proposal artifacts. A turn can contain multiple proposals.
+- The published Angular `@roithme0/chat-ui` package is consumed by Kochwiki. Its UI and conversation entry points provide host-supplied artifact rendering, generic fallback, HTTP transport, and conversation control.
+- A proposal is saved only by the Kochwiki-owned `Als Entwurf speichern` action. This copies its content into a new Kochwiki draft and does not publish it. The chat is ephemeral and responses arrive after each completed turn.
+- The implemented first flow uses free-text requests and practical recipe changes. The planned evidence-informed IBS-specific criteria, versioned skill provenance, streaming, cancellation, explicit proposal-basis selection in the UI, and conversational draft-saving tool remain open.
+- The integration currently relies on a private-network deployment boundary and temporary user selection. User authentication, delegated authorization, and a scoped service-to-service security model remain to be implemented before wider exposure.
 
 ## Experience direction
 
@@ -78,7 +89,7 @@ The first implementation should be deliberately simple and mobile-first. It may 
 
 ## Conversation and artifact boundary
 
-The chat response is a stream of ordered content and lifecycle events rather than a single text value. It should be able to represent:
+The intended chat response can evolve into a stream of ordered content and lifecycle events rather than a single completed-turn response. It should be able to represent:
 
 - Conversational text deltas
 - Tool-call lifecycle and failures
@@ -101,7 +112,7 @@ Both the proposal card action and an explicit conversational request use the sam
 
 ## Chat UI and recipe rendering
 
-The AI Service provides a reusable Angular chat UI library that owns generic conversation behavior, streaming, tool status, and typed artifact slots. Kochwiki consumes it at build time and retains the domain-specific recipe presentation.
+The AI Service provides a reusable Angular chat UI library for generic conversation presentation and typed artifact slots. Kochwiki consumes it at build time and retains the domain-specific recipe presentation. Streaming and cancellation are still intended extensions.
 
 - The AI Service defines a versioned artifact envelope and a renderer registry or equivalent host-extension point.
 - Kochwiki registers its own recipe proposal component for the Kochwiki recipe artifact type.
@@ -111,7 +122,7 @@ The AI Service provides a reusable Angular chat UI library that owns generic con
 - Kochwiki supplies its renderer to the chat UI through a typed host extension point; it does not supply a renderer to the backend.
 - A build-time Angular library is confirmed for the first Kochwiki integration. A separately hosted iframe is not the initial direction because the host must inject its domain renderer and bounded actions.
 - The library keeps a narrow public API and does not expose internal backend DTOs or private chat implementation details.
-- Package registry, publication automation, release workflow, and local cross-repository development mechanics are deferred until Kochwiki consumption is imminent.
+- GitHub Packages publication, release automation, and local cross-repository linking are established for the first integration.
 - Reusing the same renderer in a future universal-agent UI may later require a separately consumable Kochwiki renderer package, but that is not required for the first implementation.
 
 ## Scope
@@ -174,9 +185,9 @@ The AI Service provides a reusable Angular chat UI library that owns generic con
 - A versioned recipe proposal format that Kochwiki can validate and render
 - Stable references for the original recipe version and session proposals
 
-The generic AI Service chat, model adapter, streaming, tool loop, and artifact envelope can be implemented before these Kochwiki integration dependencies are complete.
+The generic AI Service chat, model adapter, bounded tool loop, artifact envelope, and first Kochwiki integration are present on staging. Streaming and cancellation remain open, as do the authentication and authorization dependencies above.
 
-## Initial AI Service sequence
+## Initial AI Service sequence (original implementation plan)
 
 1. Introduce a provider-neutral model adapter and a minimal general chat.
 2. Add streaming, cancellation, and explicit error events.
@@ -201,4 +212,4 @@ The generic AI Service chat, model adapter, streaming, tool loop, and artifact e
 
 ## Next step
 
-Define the evidence-informed IBS-focused optimization criteria and the minimum recipe, foodstuff-snapshot, proposal, session, and renderer contracts. The generic AI Service foundation can proceed in parallel with a provider-neutral model adapter and a streamed, short-lived, multi-turn chat protocol designed for multiple tool calls and typed artifacts.
+Validate the first integrated chat and proposal-to-draft flow end to end, then define the evidence-informed IBS-focused criteria and remaining product behavior. Prioritize authentication and authorization before broader access; plan streaming, cancellation, deterministic proposal-basis selection, skill provenance, and agent-invoked draft saving as explicit follow-up work.
