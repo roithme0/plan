@@ -1,7 +1,7 @@
 ---
 type: initiative
-status: planned
-last_reviewed: 2026-09-10
+status: active
+last_reviewed: 2026-09-29
 projects:
   - "[[Kochwiki]]"
 ---
@@ -14,15 +14,16 @@ A recipe owner can update a recipe while retaining its previous state in history
 
 ## Motivation
 
-Kochwiki already supports manual recipe editing through its recipe edit dialog, but updates currently replace the stored recipe directly. A shared versioning and draft model should make changes recoverable and reviewable while providing the foundation for both manual and AI-assisted editing.
+Kochwiki now supports recipe versions and drafts. This initiative tracks the remaining review experience and ownership boundary while the implemented lifecycle provides a foundation for manual and AI-assisted editing.
 
 ## Current state
 
-- The Angular frontend opens a full-screen recipe edit dialog from the recipe page.
-- The editor loads the current recipe and submits its fields through the existing recipe update flow.
-- The backend applies updates directly through `PATCH /recipes/{recipe_id}`.
-- The current persistence model has one mutable recipe record with related ingredients and preparation steps; it has no version or draft entity yet.
-- Foodstuffs referenced by a current recipe cannot be deleted.
+- On Kochwiki v2's `staging` branch, the backend stores active, draft, and historical recipe versions under a lineage. Publishing an active edit or a draft moves the prior active version into history.
+- The API supports creating and updating drafts, publishing or discarding them, and listing historical versions. Multiple drafts can coexist; publishing one leaves the others intact.
+- The Angular editor offers publishing an active edit or saving a draft. Recipe pages show active and draft states and provide draft publish/discard actions. AI proposals can also be saved explicitly as separate drafts.
+- Foodstuff deletion is blocked while any ingredient in a retained recipe version references it.
+- Historical versions are available through the API, but the current recipe-page workflow does not expose a history browser or a draft-versus-active diff.
+- User selection is still temporary; authentication, recipe ownership, and owner-only authorization are not implemented in this workflow.
 
 ## Scope
 
@@ -80,4 +81,4 @@ Recipe versions preserve their selected foodstuff references and ingredient quan
 
 ## Next step
 
-Define the ownership, version, and draft lifecycle in Kochwiki, including publication, acceptance, discard, history, stale-draft behavior, and retained foodstuff references, before choosing the persistence model and UI details.
+Add the draft-versus-active comparison and history access to the Kochwiki UI. Revisit stale-draft behavior and apply authenticated recipe ownership and authorization before treating the owner-only rules above as enforced.
