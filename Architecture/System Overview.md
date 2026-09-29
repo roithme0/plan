@@ -1,12 +1,12 @@
 ---
 type: architecture
 status: draft
-last_reviewed: 2026-09-10
+last_reviewed: 2026-09-29
 ---
 
 # System Overview
 
-The ecosystem consists of independently useful services connected through explicit APIs. [[AI Service]] provides shared AI capabilities and contains the universal agent; it does not replace the responsibilities of the domain services.
+The ecosystem consists of independently useful services connected through explicit APIs. [[AI Service]] provides shared AI capabilities and is intended to contain the universal agent; it does not replace the responsibilities of the domain services.
 
 ## Projects
 
@@ -15,6 +15,10 @@ The ecosystem consists of independently useful services connected through explic
 - [[AI Service]]
 
 An external identity provider is shared infrastructure rather than a domain project.
+
+## Current integration
+
+On the Kochwiki v2 and AI Service `staging` branches, Kochwiki starts recipe-scoped conversations through an AI Service gateway and imports the shared Angular chat package. The AI Service produces validated recipe proposal artifacts; Kochwiki renders them and creates a draft only after an explicit user action. Recipe versions and drafts exist in Kochwiki. This integration currently relies on private-network deployment and temporary user selection; the intended OIDC, ownership, delegated authorization, and universal-agent connections below are not yet implemented.
 
 ## Intended relationships
 
@@ -56,11 +60,11 @@ flowchart TB
 
 ## Direction of travel
 
-1. Stabilize Kochwiki and implement [[Browser Authentication Foundation]] while establishing the basic AI Service and agent foundation.
-2. Add domain prerequisites before their AI features: recipe ownership and versioning before optimization, and general image support before image generation.
-3. Introduce read-only agent access through constrained service interfaces.
-4. Add selected actions only after authentication, authorization, confirmation policy, and auditing are established.
-5. Extend the shared identity provider to additional browser applications when they emerge.
+1. Complete the recipe-chat and version/draft review experience already under development on staging.
+2. Implement [[Browser Authentication Foundation]], recipe ownership, and delegated authorization before exposing the integrated AI flow beyond its current private-network boundary.
+3. Add general image support before image generation, and complete the universal agent before its project connectors.
+4. Introduce read-only agent access through constrained service interfaces.
+5. Add selected actions only after authentication, authorization, confirmation policy, and auditing are established; extend shared identity to further applications as they emerge.
 
 ## Open questions
 
