@@ -49,12 +49,16 @@ Recipes have a clearer personal responsibility: users may read one another's rec
 - This changing historical representation is accepted for the current product stage.
 - Referential integrity takes priority over preserving historical foodstuff values.
 
+## Implementation state (2026-09-29)
+
+Kochwiki v2's `staging` branch has recipe lineages, active/draft/historical versions, and a foodstuff-deletion check across retained version ingredients. The authenticated multi-user model, explicit recipe owners, foodstuff change provenance, and owner-only authorization remain intended behavior under this decision, not current enforcement.
+
 ## Consequences
 
 - Shared maintenance reduces repeated foodstuff records and distributes data upkeep across users.
 - A foodstuff correction can affect nutrition calculations and presentation across active and historical recipes owned by other users.
 - Provenance makes changes attributable without granting exclusive control to the contributor.
-- Deletion checks must expand when drafts and recipe history are introduced so every retained reference is considered.
+- Deletion checks cover every retained recipe-version reference as drafts and history are introduced.
 - Authorization requires reliable authenticated user identities before these rules can be enforced.
 - Collaboration, ownership transfer, and copying or forking another user's recipe may be added later but are not implied by this decision.
 
