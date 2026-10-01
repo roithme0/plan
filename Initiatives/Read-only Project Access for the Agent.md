@@ -1,7 +1,7 @@
 ---
 type: initiative
 status: planned
-last_reviewed: 2026-08-30
+last_reviewed: 2026-10-01
 projects:
   - "[[AI Service]]"
   - "[[Kochwiki]]"
@@ -26,6 +26,14 @@ Enable requests such as asking about recipes, home state, or what to cook while 
 - Access both projects through their APIs rather than their databases or filesystems
 - Keep the entire initiative read-only
 - Make limitations in available source data visible in answers
+
+## Home Assistant MCP approach
+
+Prefer the official MCP Server integration described in [[Home Assistant]]. AI Service connects as the MCP client and consumes the available read tools and context where useful. Select a small set of exposed entities and verify the installed server's actual capabilities.
+
+The standard Assist surface can also include actions. For this initiative, explicitly restrict callable tools to verified reads and test that writes cannot execute; hiding action tools in model instructions alone is insufficient. Resolve credential scope and represented-user authorization before treating the connector as delegated access.
+
+Acceptance should cover an allowed state query, unavailable/unexposed data, connection failure, and attempted use of a disallowed action. Detailed setup and tests belong in the service repository.
 
 ## Out of scope
 
