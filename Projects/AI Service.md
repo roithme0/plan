@@ -35,6 +35,10 @@ Keep model- and provider-specific concerns behind stable service interfaces. Dom
 - The next foundation work includes streaming and cancellation, more explicit tool-status presentation, and the general model-backed agent with one live weather tool.
 - Kochwiki and the AI Service currently operate within a private-network boundary. Authentication, delegated user context, and service authorization are required before exposing the integration more broadly.
 
+## Home Assistant connector direction
+
+Use the official Home Assistant MCP Server through the generic MCP runtime described in [[Recipe Agent Capability and Proposal Outline]], rather than introducing Home Assistant domain logic into the runtime. [[Home Assistant]] records the available surface and planned rollout: selected state access first, controlled actions later. This connector is planned; current implementation is not asserted here.
+
 ## Ecosystem relationships
 
 See [[System Overview]].
