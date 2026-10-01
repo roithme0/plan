@@ -61,6 +61,7 @@ See [[System Overview]].
 ## Related ideas
 
 - [[Foodstuff History and Duplicate Management]]
+- [[Semantic Recipe and Foodstuff Search in the UI]] — exploring reuse of planned semantic retrieval for ordinary UI search
 
 ## Open questions
 
