@@ -9,3 +9,4 @@ This index collects uncommitted possibilities. An idea can become an [[Initiativ
 - [[Foodstuff History and Duplicate Management]]
 - [[Profile-based Recipe Constraints and Preferences]]
 - [[Shared Agent Chat UI and Domain Rendering]]
+- [[Recipe Optimization Skills and Kochwiki Tools]]
