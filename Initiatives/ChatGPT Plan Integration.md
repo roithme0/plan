@@ -42,6 +42,7 @@ The current documented flow is a preview; keep the adapter requirements in servi
 - Use `instructions` or developer messages for agent guidance; explicit system message items are rejected in this flow.
 - Filter unsupported fields, including `temperature`, `top_p`, `max_output_tokens`, `max_tool_calls`, `background` and `conversation`. The linked preview reference is authoritative for the complete list.
 - Use the supported function/custom-tool format (namespaces or `additional_tools` input items). AI Service discovers and executes Kochwiki/Home Assistant MCP tools itself, then returns their results to the model. Hosted Responses MCP/connectors and Responses `tool_search` are unsupported in this flow.
+- Verify hosted Web Search availability and usage coverage independently for [[Web Information Retrieval]]. Ordinary Responses API support does not establish support through this subscription path; do not silently fall back to paid API-key access.
 - Do not assume image generation, file search, Code Interpreter, audio/transcription or other ordinary API features are covered. This initiative covers eligible Responses inference; embeddings for Kochwiki semantic search and image-generation capabilities keep their separate provider/billing paths unless independently supported later.
 
 ## Project roles

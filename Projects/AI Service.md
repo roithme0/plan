@@ -39,6 +39,10 @@ Implement [[ChatGPT Plan Integration]] as a committed additional model-access mo
 - Tool-result retention across turns remains a high-priority follow-up. It and streaming are now prerequisites for [[ChatGPT Plan Integration]]; neither is claimed implemented. Cancellation, broader tool-status presentation and the general model-backed agent remain follow-up work.
 - Kochwiki and the AI Service currently operate within a private-network boundary. Authentication, delegated user context, and service authorization are required before exposing the integration more broadly.
 
+## Web information retrieval direction
+
+Implement [[Web Information Retrieval]] as committed planned work for recipe conversations and the universal agent. Prefer OpenAI's hosted Web Search in the Responses API for obtaining external information, with agent search guidance, clickable source citations and search usage handling. Provider/model support, including the ChatGPT-plan path, must be checked independently. Browser UI automation is outside this initiative.
+
 ## Home Assistant connector direction
 
 Use the official Home Assistant MCP Server through the generic MCP runtime described in [[Recipe Agent Capability and Proposal Outline]], rather than introducing Home Assistant domain logic into the runtime. [[Home Assistant]] records the available surface and planned rollout: selected state access first, controlled actions later. This connector is planned; current implementation is not asserted here.
@@ -53,6 +57,7 @@ See [[System Overview]].
 - [[Recipe and Ingredient Images]] — planned
 - [[Universal Agent Foundation]] — planned
 - [[ChatGPT Plan Integration]] — planned
+- [[Web Information Retrieval]] — planned
 - [[Read-only Project Access for the Agent]] — planned
 - [[Controlled Agent Actions]] — exploring
 - [[Photo-assisted Foodstuff Nutrition Entry]] — exploring
