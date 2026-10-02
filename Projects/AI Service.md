@@ -1,7 +1,7 @@
 ---
 type: project
 status: active
-last_reviewed: 2026-09-29
+last_reviewed: 2026-10-02
 ---
 
 # AI Service
@@ -12,7 +12,7 @@ Provide shared AI capabilities and an agent-based interface across projects in t
 
 ## Current role
 
-On the `staging` branch, the service runs a generic session-based conversation API with an OpenAI-backed recipe-improvement agent and a deterministic demo agent. It owns bounded proposal-tool orchestration, validation, short-lived conversation state, and typed artifacts. Kochwiki v2 uses this service for recipe-scoped improvement through a restricted gateway route.
+The service runs a generic session-based conversation API with a configured MCP-backed Kochwiki agent and a deterministic demo agent. It owns bounded tool orchestration, generic validation, ephemeral conversation state and artifact delivery. Kochwiki owns domain tools, instructions and proposals; its frontend uses the service through restricted gateway routes. See [[Recipe Agent Capability and Proposal Outline]].
 
 The service also publishes the reusable Angular `@roithme0/chat-ui` package. Kochwiki consumes its UI and conversation entry points and supplies a recipe artifact renderer. A universal agent for generic questions or live weather is not implemented. Streaming, cancellation, durable chat history, and production-grade cross-service authorization remain open.
 
@@ -29,10 +29,10 @@ Keep model- and provider-specific concerns behind stable service interfaces. Dom
 
 ## Foundation and remaining direction
 
-- The backend retains source context, messages, and proposal artifacts in process-local sessions. Completed turns can produce several validated artifacts; there is no database-backed chat history.
-- A provider adapter and bounded tool loop are implemented for recipe improvement. Service code assigns artifact identifiers, order, timestamps, and base references.
-- The Angular package exposes separate `/ui` and `/conversation` entry points. Kochwiki registers its own Angular recipe template, and unknown artifact types have a generic fallback.
-- The next foundation work includes streaming and cancellation, more explicit tool-status presentation, and the general model-backed agent with one live weather tool.
+- The backend retains caller context, messages, and generic artifacts in process-local sessions. Completed turns can produce several validated artifacts; there is no database-backed chat history.
+- A provider adapter and generic MCP tool loop are implemented. Service code assigns artifact identifiers, order and timestamps; proposal IDs and base references belong to Kochwiki.
+- The Angular package exposes separate `/ui` and `/conversation` entry points. Kochwiki registers recipe and foodstuff templates and advertises their schemas and metadata. JSON is an explicit presentation capability.
+- Tool-result retention across turns is a high-priority deferred follow-up. Streaming, cancellation, tool-status presentation and the general model-backed agent remain later work.
 - Kochwiki and the AI Service currently operate within a private-network boundary. Authentication, delegated user context, and service authorization are required before exposing the integration more broadly.
 
 ## Home Assistant connector direction

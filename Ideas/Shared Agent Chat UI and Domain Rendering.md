@@ -1,7 +1,7 @@
 ---
 type: idea
 status: exploring
-last_reviewed: 2026-09-29
+last_reviewed: 2026-10-02
 projects:
   - "[[AI Service]]"
   - "[[Kochwiki]]"
@@ -26,20 +26,20 @@ At the same time, a generic chat UI must be able to present domain-specific resu
 
 ## Implemented first integration
 
-On the `staging` branches, the shared `@roithme0/chat-ui` package offers separate UI and conversation entry points. Kochwiki imports it for recipe improvement and registers a host-owned Angular template for the `kochwiki-recipe` artifact type. That template uses Kochwiki's shared recipe presentation for the original snapshot and proposals, with a Kochwiki-owned save-as-draft action on proposals. The library frames artifacts and falls back to a generic JSON view for unknown types; its conversation controller handles completed-turn HTTP requests and recovery.
+The shared `@roithme0/chat-ui` package offers UI and conversation entry points. Kochwiki registers host-owned recipe and foodstuff templates and advertises complete payload, header and metadata contracts to the backend. AI Service validates and delivers explicitly requested artifacts through a generic local presentation tool. Optional proposal metadata enables the Kochwiki-owned save action; JSON is an explicit capability, not the automatic domain rendering path. MCP only supplies domain data and workflow guidance.
 
 The first integration does not stream responses or support cancellation. It has not established a portable domain renderer for a future universal agent.
 
 ## Content and artifact model
 
-An assistant turn is an ordered stream of content and lifecycle events rather than a single text response. It may contain conversational text, tool status, errors, and multiple typed artifacts.
+The future streaming direction is an ordered stream of content and lifecycle events; the implemented API currently returns completed turns. It may contain conversational text, tool status, errors, and multiple typed artifacts.
 
 - The AI Service backend returns typed, versioned artifact envelopes in addition to conversational text.
 - Service code assigns deterministic artifact identifiers, ordering, timestamps, and references.
 - The model supplies organic content and structured domain candidates but does not invent application identity or lifecycle metadata.
 - One assistant turn may contain several artifacts of the same type.
 - The shared chat UI understands the artifact envelope and conversation behavior without owning every domain representation.
-- A generic fallback representation remains available when no specialized renderer exists.
+- The model may select the explicit JSON capability when structured inspection is useful and no suitable domain capability is available.
 
 For example, a recipe proposal can be identified as a typed artifact associated with the recipe version or earlier proposal on which it is based. The exact domain schema belongs to the corresponding integration.
 
@@ -51,9 +51,9 @@ The shared chat UI should expose a renderer registry or equivalent host-extensio
 - The chat UI selects the registered renderer when displaying an artifact.
 - The renderer receives validated artifact data and a deliberately narrow set of host actions.
 - Rendering an artifact does not grant permission to mutate the underlying domain object.
-- Unknown artifacts use the generic fallback.
+- Unsupported domain artifacts are contained by the host rather than interpreted as a different domain type.
 
-For the first [[AI-assisted Recipe Optimization]] integration, Kochwiki retains its recipe proposal component and registers it with the embedded chat UI. The recipe renderer provides domain-specific actions such as selecting a proposal as the basis for the next request or saving it as a draft. The AI Service does not import or own Kochwiki recipe code.
+For the first [[AI-assisted Recipe Optimization]] integration, Kochwiki retains its recipe proposal component and registers it with the embedded chat UI. The recipe renderer supports saving a stored proposal through its advertised metadata. Selecting a proposal basis uses natural language; advanced selection controls are deferred. The AI Service does not import or own Kochwiki recipe code.
 
 ## Packaging direction for the first integration
 
@@ -71,12 +71,12 @@ The fact that the chat UI belongs to the AI Service describes product and source
 
 ## Kochwiki first use
 
-- The AI Service retains initialization snapshots, active conversation state, proposals, lineage, and provenance in a short-lived session; Kochwiki does not provide durable chat persistence.
+- AI Service retains generic initialization context, conversation state and artifacts. Kochwiki retains proposals and source/base references in backend memory; neither service provides durable chat persistence.
 - The AI Service chat package owns generic conversation presentation, artifact placement, and completed-turn conversation control. Streaming, cancellation, and tool-status presentation remain future work.
 - Kochwiki registers the recipe proposal renderer and supplies bounded domain actions.
-- All proposals remain visible in the linear chat history.
+- Explicitly presented proposals remain visible in the linear chat history; domain registration does not automatically display them.
 - Proposal lineage may reference the original recipe version or an earlier proposal without changing the linear presentation.
-- A future universal agent may initially use the generic fallback or link to Kochwiki when no recipe renderer is installed.
+- A future universal agent can advertise its own capabilities and may use explicit JSON presentation or a link when no recipe renderer is installed.
 
 ## Renderer ownership problem
 
@@ -91,7 +91,7 @@ If the universal agent later needs the same rich recipe rendering, a possible ap
 - Tool capabilities express domain intent, such as retrieving a recipe or creating a recipe draft.
 - The UI and conversational agent may invoke the same bounded domain action through different user interactions.
 - Concrete tool contracts, authentication, authorization, confirmation, and audit behavior are designed with the corresponding initiative.
-- A domain mutation tool should prefer deterministic artifact references over model-reconstructed domain payloads.
+- A domain mutation tool should prefer domain-issued references, such as stored proposal IDs, over model-reconstructed payloads or artifact IDs.
 
 ## Alternatives still open
 

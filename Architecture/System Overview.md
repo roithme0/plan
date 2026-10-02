@@ -1,7 +1,7 @@
 ---
 type: architecture
 status: draft
-last_reviewed: 2026-09-29
+last_reviewed: 2026-10-02
 ---
 
 # System Overview
@@ -18,7 +18,18 @@ An external identity provider is shared infrastructure rather than a domain proj
 
 ## Current integration
 
-On the Kochwiki v2 and AI Service `staging` branches, Kochwiki starts recipe-scoped conversations through an AI Service gateway and imports the shared Angular chat package. The AI Service produces validated recipe proposal artifacts; Kochwiki renders them and creates a draft only after an explicit user action. Recipe versions and drafts exist in Kochwiki. This integration currently relies on private-network deployment and temporary user selection; the intended OIDC, ownership, delegated authorization, and universal-agent connections below are not yet implemented.
+Kochwiki starts recipe-scoped conversations through the AI Service gateway and
+uses its shared Angular chat package. Kochwiki owns semantic discovery, proposals,
+workflow instructions and atomic draft/dependency saving through MCP. AI Service
+owns generic model/tool execution, ephemeral conversations and artifact delivery.
+The frontend advertises its presentation capabilities and owns domain renderers;
+MCP has no artifact interface. Chat and artifact-button saving share Kochwiki's
+proposal save service. See [[Recipe Agent Capability and Proposal Outline]].
+
+The MVP foundation is implemented in the local checkouts; real-model end-to-end
+verification is left to the user. It relies on private-network deployment and
+temporary user selection. OIDC, ownership enforcement, delegated authorization
+and universal-agent connections below remain longer-term work.
 
 ## Intended relationships
 

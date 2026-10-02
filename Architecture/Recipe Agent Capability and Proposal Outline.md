@@ -1,7 +1,7 @@
 ---
 type: architecture
-status: proposed
-last_reviewed: 2026-10-01
+status: implemented-foundation
+last_reviewed: 2026-10-02
 projects:
   - "[[Kochwiki]]"
   - "[[AI Service]]"
@@ -11,151 +11,163 @@ projects:
 
 ## Direction and status
 
-Translate [[Recipe Optimization Skills and Kochwiki Tools]] into minimum capabilities and responsibilities. The workflow is agreed; names and integration conventions below remain proposed. Exact schemas, limits, storage choices, and deployment settings belong in the service repositories.
+The agreed MCP-based recipe workflow foundation is implemented in the local
+Kochwiki and AI Service checkouts. This note records the delivered architecture
+and follow-up priorities; service repositories remain authoritative for schemas,
+limits, deployment and tests. Manual end-to-end verification with the real model
+is left to the user. Implementation is not evidence of better recipe quality or
+production readiness.
 
-Kochwiki owns recipe-domain tools, instructions, future skill content, and stored proposals, exposed through MCP. AI Service becomes a generic conversation and MCP runtime. This supersedes the earlier outline that retained proposal registration and a domain-specific save bridge inside AI Service.
+This replaces the exploratory outline from 2026-10-01. Subsequent discussion
+simplified candidate identities, storage, discovery, presentation and repeated
+saving. Earlier illustrative contracts are not outstanding implementation tasks.
 
-The initial context remains the selected recipe and its used foodstuffs. Additional ingredients and optional reference recipes use semantic discovery. Clarification is conversational, artifacts are selective, and clear matches require no confirmation. Temporary foodstuffs are persisted only with an explicit proposal save or standalone creation request. Skills, advanced UI shortcuts, and detailed security hardening follow later.
+## Responsibilities
 
-## Domain independence of AI Service
+Kochwiki owns recipe and foodstuff validation, calculation, semantic search,
+domain instructions, proposals and atomic draft/dependency saving. Its official
+Python MCP SDK server runs inside the existing backend and exposes Streamable
+HTTP at `/mcp/`. Future recipe skills also belong to Kochwiki.
 
-AI Service can carry recipe JSON, tool schemas, instructions, and opaque domain references without having compiled recipe/foodstuff/proposal models or interpreting their business meaning. Its responsibilities are generic:
+AI Service owns generic model integration, conversations, turns, tool execution,
+MCP connection lifecycle and generic artifact validation/delivery. Its configured
+`kochwiki` agent identifies a model and MCP connection, not domain implementation.
+Recipe-specific models, tools, instructions, lifecycle wrappers and the
+`kochwiki-contract` dependency have been removed.
 
-- Model/provider integration and instruction/context assembly.
-- Conversation messages, turns, execution limits, failures, and conversation expiry.
-- MCP discovery, tool invocation, result handling, and connection lifecycle.
-- Generic artifact envelopes, ordering, identifiers, and delivery to the host UI.
-- Retention of tool results and opaque domain-context references needed across turns.
+The Kochwiki frontend owns domain renderers and advertises presentation
+capabilities with complete payload schemas, header guidance and optional metadata
+schemas. Shared chat UI provides generic display infrastructure and a JSON renderer.
 
-Kochwiki owns recipe validation, calculation, candidate definitions, proposal bases/lineage, proposal IDs and limits, persistence, and draft/dependency creation. Domain instructions come from Kochwiki; AI Service retains instructions about its own generic runtime behavior.
+Guidance has separate owners:
 
-A configured agent may still be named `kochwiki` and identify an MCP connection and startup workflow. This is configuration, not a dedicated domain implementation. Remove the `kochwiki-contract` dependency once no domain imports remain.
+- MCP instructions: domain workflow, clarification, duplicate checks, explicit
+  writes, proposal refinement and selective presentation.
+- Tool descriptions and schemas: individual operation inputs, outputs, side effects
+  and constraints.
+- Artifact capabilities: renderer data, titles, subtitles and metadata meanings.
+- AI Service guidance: generic conversation, execution and presentation behavior.
 
-## Minimum Kochwiki MCP capabilities
+## Context, discovery and tools
 
-Names describe intended operations rather than finalized protocol contracts.
+The frontend supplies a snapshot of the selected recipe version including its
+used foodstuffs inline. It does not supply the full catalogue. Search is optional
+and used for additional ingredients or reference recipes.
 
-| Proposed capability | Conceptual input | Conceptual result | Persistence effect |
-| --- | --- | --- | --- |
-| `search_foodstuffs` | Natural-language query and bounded limit | Ranked summaries with canonical IDs, name/brand/unit, and truncation information | None |
-| `get_foodstuff` | Canonical ID | Supported identity, unit, and nutrition fields; unknown values explicit | None |
-| `search_recipes` | Natural-language query and bounded limit | Ranked summaries with lineage/version/state references | None |
-| `get_recipe` | Exact lineage/version reference | Complete recipe and used-foodstuff presentation | None |
-| `prepare_recipe_proposal` | Editing context/source, explicit base, complete candidate recipe, temporary foodstuff definitions | Validated stored proposal reference and complete preview | Proposal storage only; no recipe/catalogue write |
-| `get_recipe_proposal` | Opaque proposal reference | Stored proposal content and presentation | None |
-| `save_recipe_proposal` | Opaque proposal reference and write-operation identity | Actual draft references and created/reused foodstuff mappings | Draft and required missing foodstuffs atomically |
-| `create_foodstuff` | Definition or reference to an exact retained candidate, plus write-operation identity | Persisted foodstuff or structured conflict/validation outcome | Explicit standalone catalogue write |
-
-Proposed initial recipe-search coverage is active recipes, while the selected draft remains available through source context. Broader draft/history discovery can follow a concrete need.
-
-Search supplies plausible matches, not identity guarantees. Return enough distinguishing information to support natural-language clarification. Zero results do not prove absence. Search relevance examples should cover paraphrases, branded/generic products, close alternatives, ambiguity, and no suitable match. Index technology and limits remain implementation choices. Newly created data must become searchable; do not make external indexing part of the atomic recipe/catalogue transaction.
-
-Proposal retrieval allows tools and the host UI to refer to Kochwiki-owned content without treating the chat's rendered copy as the source of truth. Natural-language references such as "the second proposal" must resolve to an actual proposal reference; retrieval artifacts must not alter proposal numbering.
-
-## Conversation lifecycle and domain lifecycle
-
-Keep the existing shared conversation lifecycle in AI Service. Do not move chat history or model-turn orchestration to Kochwiki merely because proposals move.
-
-| AI Service conversation state | Kochwiki domain state |
+| Capability | Delivered behavior |
 | --- | --- |
-| Conversation ID, messages, active turn, turn result | Source recipe/version and any editing-context reference |
-| Generic initial context and opaque connector references | Stored recipe proposals and their explicit bases |
-| Generic artifact records and display order | Temporary foodstuff definitions and canonical mappings |
-| Conversation lifetime and runtime budgets | Proposal retention/expiry and domain proposal limits |
-| MCP client/connection lifetime | Atomic draft/dependency operations and write outcomes |
+| `search_foodstuffs` | Name/alias semantic search with enriched identity, unit and nutrition summaries |
+| `search_recipes` | Name semantic search with complete active versions and drafts; historical versions excluded |
+| `create_foodstuff` | Explicit standalone catalogue creation |
+| `update_foodstuff` | Explicit update of an unambiguously identified shared entry |
+| `create_recipe_proposal` | Validate and store a complete candidate with source/base references |
+| `get_recipe_proposal` | Retrieve stored input and resolve a complete current presentation |
+| `save_recipe_proposal` | Save the proposal and required temporary foodstuffs atomically |
 
-The current `recipe_improvement/session_lifecycle.py` is a thin recipe-typed wrapper over `ConversationSessionStore`, with a 90-minute lifetime, recipe artifact type, and proposal limit. Retain the shared store; replace the wrapper with generic configuration. Proposal-specific limits belong to Kochwiki and generic artifact/context limits stay in AI Service.
+Search results are enriched deliberately so a separate get call is normally
+unnecessary. Separate foodstuff/recipe get tools were deferred. Similarity scores
+stay internal. Search is a prefilter, not proof of identity or absence. Clear
+matches need no confirmation; ambiguity is clarified through natural language.
+Search initially targets names/aliases, not broad nutritional/category queries.
 
-Kochwiki does not necessarily need a second full session system. An explicit editing-context handle is useful if it owns a frozen source snapshot, proposal scope, or context-level limits. It can hold those domain facts without chat messages. Alternatively, operations can carry explicit source/base references where sufficient. Choose the minimum domain context needed rather than duplicating the conversation lifecycle.
+AI Service discovers tools and server instructions at startup and exposes stable
+connection-prefixed tool names. Restart it after server capability changes.
+Discovery does not call domain tools. Multiple MCP connections are supported by
+the generic runtime; Kochwiki is the first integration.
 
-If an editing context is introduced, the host can establish it through Kochwiki and pass an opaque handle and initial snapshot to AI Service. A configured generic MCP startup operation is another option. AI Service should not hardcode recipe-specific startup behavior. The server determines the operation/content; the runtime only executes a declared integration convention.
+## Proposals and lifecycle
 
-An MCP connection is not the domain editing context. Pass explicit handles/references rather than infer proposal ownership from connection lifetime. Conversation expiry does not delete committed drafts or standalone foodstuffs. Kochwiki cleans up expired proposal-only state under its own policy; explicit close notification may be an optimization, not the sole cleanup mechanism. Surface expired/missing domain references as tool outcomes even if the conversation itself is still active.
+Kochwiki stores proposals and proposal-to-saved-version mappings in process memory,
+assuming one deployment/worker. They survive neither backend restart nor shutdown.
+There is no second domain conversation system, editing-context bootstrap, database
+proposal storage or automatic proposal expiry in this foundation.
 
-The direction is to store proposals in Kochwiki, but storage durability and retention remain choices. That does not imply durable chat history, automatic chat reopening, or permanent proposal storage.
+AI Service retains ephemeral conversations with a fixed 90-minute lifetime.
+Conversation expiry does not delete committed recipes or foodstuffs. Proposal
+storage is independent of chat artifacts and conversation lifetime.
 
-## Proposal-model responsibilities
+Each proposal has a domain-issued ID, an original source recipe version and an
+optional base proposal. Refinements register a new complete proposal and retain
+the base's original source. Existing ingredients reference canonical foodstuff IDs;
+temporary ingredients contain inline definitions with name, unit and optional
+brand/nutrition. There are no separate temporary candidate IDs or registration
+operations. Repeated ingredient identities and invalid references are rejected.
 
-| Concept | Kochwiki-owned requirement |
-| --- | --- |
-| Existing ingredient | Reference variant containing a canonical foodstuff ID |
-| Temporary ingredient | Reference variant containing an issued local candidate ID |
-| Candidate definition | Name, optional brand, unit, nullable supported nutrition; no invented database ID |
-| Proposal content | Complete normalized recipe, source/base, and exact referenced candidate definitions |
-| Preview | Resolved existing/candidate presentation with temporary status and missing data visible |
-| Proposal identity | Domain-issued reference, immutable content, domain ordering/base rules |
-| Save outcome | Draft references and candidate-to-canonical-ID mapping retained independently of chat artifacts |
+Source versions and existing foodstuffs are references, not frozen copies.
+Presentation resolves current foodstuff values and computes nutrition without
+inserting catalogue rows. Unknown nutrition remains unknown. Missing dependencies
+produce errors when an operation requires them. Abandoned proposals create no
+catalogue data and need no user cleanup.
 
-Recommend defining new candidates within proposal preparation rather than requiring a general candidate-registration tool. Model-supplied request-local labels can connect definitions to ingredients; Kochwiki normalizes them to issued IDs. Refinement reuses unchanged definitions, while changed definitions receive new identities. Every stored proposal must retain enough content to save exactly what was reviewed.
+## Presentation and actions
 
-Only candidates actually referenced by the recipe are materialized. Reject or normalize unused definitions, dangling references, inconsistent definitions, quantities/units, and duplicate ingredient references. Revalidate after canonical-ID mapping because two local candidates might resolve to the same existing foodstuff.
+MCP returns domain data and has no artifact interface. The model chooses whether
+to call AI Service's generic local `present_artifact` tool with a complete payload
+matching a frontend-advertised capability. The frontend performs no enrichment
+fetches. Retrieval does not automatically display an artifact.
 
-Preview and saving use the same domain rules. Extend Kochwiki's ID-only presentation/calculation boundary to resolve temporary definitions without inserting catalogue rows. Unknown nutrition staying unknown is the proposed initial policy; reuse existing calculation semantics rather than implementing nutrition in AI Service.
+Recipe and foodstuff capabilities reuse Kochwiki presentation components.
+Presentational fields stay minimal; catalogue IDs and domain state are excluded
+unless required by a separately advertised metadata contract. Foodstuff names are
+artifact titles and brands are optional subtitles. Recipe names are titles.
+JSON is an explicit capability, not the automatic rendering path for domain results.
 
-## Artifact delivery and selective presentation
+Optional recipe artifact metadata `proposalId` identifies the stored proposal
+represented by the display and enables its save button. Existing recipe references
+have no proposal-save action. The button uses Kochwiki's HTTP save endpoint, which
+calls the same service and store as the MCP save tool. Artifact IDs and proposal
+IDs remain distinct; redisplaying a proposal does not register a new proposal.
 
-A proposal is a Kochwiki domain object. An artifact is a generic conversation presentation record. Keep their identifiers and lifecycles distinct: displaying or redisplaying a proposal does not create another proposal.
+The agent knows which proposal ingredients are temporary. Visually distinguishing
+them is a deferred presentation improvement; it is not part of the current
+minimal recipe renderer contract.
 
-Kochwiki defines typed payloads for reference recipes, foodstuffs, proposal previews, and persisted outcomes. The Kochwiki host supplies their renderers. AI Service understands only the agreed generic envelope and can store/forward the payload without domain deserialization.
+## Writes and outcomes
 
-Selective display requires an explicit integration convention. A Kochwiki MCP presentation operation can return retained domain data for display, or domain tools can support explicit display intent in their results. AI Service consumes a generic artifact marker/envelope; it must not infer display from a tool name or automatically turn every read into an artifact. MCP results alone do not establish our application-specific artifact behavior.
+Dedicated foodstuff creation and updates require explicit requests. Duplicate
+checks, target clarification and nutrition-unit clarification/warnings are agent
+workflow policies. Validation still enforces operation schemas. Standalone writes
+are distinct from proposing temporary ingredients.
 
-A generic local `show_artifact` facility is also possible if it references validated returned data, but it must not contain recipe-specific logic. The choice of a domain-provided display operation versus generic local presentation remains open; the earlier Kochwiki-specific `show_retrieved_item` implementation is not required.
+Explicit proposal saving also authorizes creating required temporary foodstuffs,
+without a separate confirmation. Kochwiki revalidates dependencies and creates the
+foodstuffs and source-lineage draft in one transaction; failures roll back together.
+Publication, acceptance, discard and deletion are not agent tools.
 
-Reference recipes have no proposal-save action. MVP clarification works through natural language; interactive candidate-selection controls are deferred. Generic transport instructions about artifact delivery stay in AI Service, while domain guidance about when to show a recipe or foodstuff belongs in Kochwiki.
+Repeated saving of the same proposal returns its previously created version in
+its current state, even after edits or publication. A deleted saved version causes
+an error rather than recreation. The mapping is in memory alongside proposals;
+a separate write-operation identity or durable outcome ledger is not implemented.
 
-## Atomic persistence and reliable outcomes
+Temporary definitions currently create new catalogue entries. If a matching entry
+was created separately, saving reports a conflict and rolls back. Automatic reuse,
+canonical mappings across proposals and conflict reconciliation are deferred
+stability improvements; semantic similarity must not silently merge products.
 
-An explicit save request or existing save button includes creating required missing foodstuffs with no extra confirmation. Kochwiki resolves the stored proposal, validates current dependencies, creates/reuses exact matches, maps references, and creates the draft in one transaction. Failure rolls back newly inserted dependencies and the draft together.
+## Verification and follow-up priorities
 
-Never reuse products on semantic similarity alone or silently modify shared foodstuffs. Exact identity/equivalence rules need service-level definition; conflicts return issues for conversational clarification.
+Automated coverage exercises MCP discovery/instruction delivery, generic tool and
+artifact composition, proposal validation/preview, atomic rollback, repeat saves,
+HTTP/MCP convergence and UI save behavior. Scripted models do not establish real
+agent behavior. The user will perform manual end-to-end verification; no new
+verification slice is scheduled now.
 
-Use runtime-generated write-operation identities, not model-invented values. Retries of the same intent recover the same outcome; a new explicitly requested save uses a new identity. Bind result recovery to the committed operation so a timeout or later model failure does not cause duplicate writes or falsely imply rollback.
+Runtime budgets have been raised to provide room for richer tool workflows while
+remaining finite. Exact values and timeout constraints belong in AI Service docs.
 
-If standalone creation has already materialized a candidate, Kochwiki retains the mapping and revalidates it during later saving without rewriting an immutable proposal. That intentional standalone record is not rolled back when a separate future save fails.
+Deferred work, as agreed on 2026-10-02:
 
-## Migration outline
+1. **High-priority follow-up: retain tool results across turns.** Currently only
+   final replies, not tool transcripts, reach later turns; identifiers depend on
+   final replies. Generic retention/context handling needs its own slice. It is
+   more urgent than the improvements below, but deliberately deferred now.
+2. Visually distinguish existing and temporary proposal ingredients.
+3. Reconcile temporary ingredients with catalogue entries created after proposal
+   registration, including explicit standalone creation.
+4. Add focused skills and evaluate recipe quality once the foundation is exercised.
+5. Add durable history/outcome recovery, streaming/cancellation, advanced UI actions
+   and authentication/authorization/auditing as separately scoped work when needed.
 
-1. Establish generic MCP tool/instruction consumption and a generic artifact delivery convention in AI Service, with semantic search/read capabilities in Kochwiki.
-2. Add Kochwiki proposal storage, temporary candidate representation, pure preview, and proposal-reference tools.
-3. Route conversational and existing UI saving to Kochwiki's atomic stored-proposal save. Add explicit standalone creation.
-4. Switch the configured Kochwiki conversation to generic MCP execution and generic source context; remove recipe-specific input normalization, instructions, resolver, model types, artifact handler, proposal tools, and lifecycle wrapper from AI Service as their replacements become usable.
-5. Keep shared session, tool-loop, model-adapter, artifact-envelope, and chat-UI infrastructure. Ensure artifacts cannot be counted or interpreted as domain proposals.
-6. Verify representative workflows, rollback, unknown nutrition, ambiguous references, expired domain state, and uncertain writes. Skills, advanced UI actions, and security hardening follow separately.
-
-Temporary coexistence during migration is acceptable. Do not preserve the domain-specific session wrapper as a permanent second architecture or remove current working behavior before the MCP replacements exist. Review tool budgets against real search/read/optional-display/proposal sequences.
-
-## Remaining choices
-
-- Minimal editing-context/bootstrap contract and proposal storage retention/durability.
-- Generic artifact-envelope and selective-display convention across MCP.
-- Semantic retrieval/index approach and MCP packaging/SDK.
-- Exact foodstuff reuse/conflict rules and unknown-nutrition policy.
-- Initial recipe-search states and operation-result recovery storage/lifetime.
-
-## Compact handoff: start here for first-slice planning
-
-The discussion established direction, not an implementation specification. Read this outline and [[Recipe Optimization Skills and Kochwiki Tools]] before defining the first slice. The existing [[AI-assisted Recipe Optimization]] initiative describes the delivered baseline and original scope; the next iteration deliberately expands it.
-
-Agreed constraints to preserve:
-
-- Improve the technical/workflow foundation; better recipe quality is a later outcome. MCP comes before skills and is not motivated by catalogue limits.
-- Kochwiki owns domain tools, instructions, future skill content, stored proposals, and proposal lifecycle. AI Service should lose its domain models/tools/instructions and contract dependency as replacements become usable.
-- Keep the shared AI Service conversation lifecycle and generic artifact transport. A connector configuration can remain named Kochwiki; it must not contain domain logic. Transitional coexistence is allowed.
-- Snapshot the selected recipe and its used foodstuffs. Semantically discover additional foodstuffs and optionally reference recipes; searching and choosing an identity are distinct.
-- Clarify through natural language, choose clear matches without confirmation, and show artifacts only when useful. Defer advanced click actions. A displayed reference is not a proposal; proposal IDs and artifact IDs are distinct.
-- Proposals can contain unsaved candidate foodstuffs. Abandonment creates no catalogue records and needs no user cleanup.
-- Explicit saving includes required missing foodstuffs without another confirmation. Kochwiki saves dependencies and draft atomically and rolls back new dependencies on failure. Standalone foodstuff creation requires an explicit request.
-- Skills, sophisticated UI shortcuts, and detailed authentication/authorization/security hardening are later work, not blockers for developing the MVP foundation.
-
-Suggested first slice, not yet selected: prove a generic MCP-backed conversation using Kochwiki-provided instructions, semantic foodstuff search, and detailed retrieval. Include one selective read-only foodstuff artifact if needed to validate the generic display convention. Keep the current recipe-improvement path working while the replacement develops. This slice is an engineering increment toward the agreed read/write workflow, not a final read-only product scope.
-
-Before implementation, choose that slice's exact acceptance criteria, MCP transport/SDK, semantic retrieval approach, initial-context/bootstrap shape, and display convention. Proposal storage durability/retention and exact foodstuff reuse rules can be resolved when their slices are scoped; do not present the illustrative defaults above as approved decisions.
-
-No service source code was changed during this planning discussion. Implementation evidence came from the local checkouts; recheck branch state and applicable repository instructions before editing. Detailed specs belong in the implementation repositories, while cross-project intent stays here.
-
-## Implementation anchors
-
-AI Service currently couples `agents/recipe.py`, `agents/wiring.py`, `sessions/http.py`, and the `recipe_improvement` package to recipe models/instructions/tools. Its `kochwiki-contract` dependency is explicit in `backend/pyproject.toml`. Shared `sessions/conversation.py` and `sessions/agent_service.py` already provide generic lifecycle foundations.
-
-Kochwiki's recipe/foodstuff services and contract package own current domain calculation and persisted-ID schemas. Its frontend proposal-save mapping currently reconstructs writes from presentation and must switch to stored domain proposal references.
+The immediate outcome is the implemented technical/workflow foundation, not
+measurably better suggestions. Manual verification and deferred improvements do
+not justify describing it as a production-ready feature.

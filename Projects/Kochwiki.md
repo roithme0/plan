@@ -1,7 +1,7 @@
 ---
 type: project
 status: active
-last_reviewed: 2026-09-29
+last_reviewed: 2026-10-02
 ---
 
 # Kochwiki
@@ -14,13 +14,13 @@ Provide a private, mobile-first application for managing recipes and their ingre
 
 On Kochwiki v2's `staging` branch, the Angular frontend and FastAPI backend support recipe and foodstuff management, ordered ingredients and steps, and calculated nutrition. Recipes now have active, draft, and historical versions under a lineage. Manual edits can publish a new active version or create and update a draft; drafts can be published or discarded. Retained versions keep live foodstuff references, and any such reference blocks foodstuff deletion. The API lists historical versions, but the recipe UI does not yet offer a history browser or a draft-versus-active diff.
 
-Active recipes and drafts can open a recipe-scoped improvement chat. Kochwiki supplies a fixed recipe and foodstuff snapshot to the AI Service, renders the original and generated recipe artifacts through its own presentation, and can explicitly save a proposal as a new draft. The AI Service remains optional for ordinary recipe management.
+The MCP-based recipe workflow foundation is implemented: semantic discovery, in-memory proposals with temporary foodstuffs, explicit foodstuff creation/updates and atomic proposal saving through chat or the artifact button. Kochwiki owns domain guidance and frontend presentation contracts. See [[Recipe Agent Capability and Proposal Outline]] for delivered responsibilities and deferred work; real-model verification remains manual. Active recipes and drafts open a recipe-scoped chat with the selected recipe and its used foodstuffs in the snapshot. The AI Service remains optional for ordinary recipe management.
 
 The browser still uses temporary user selection rather than authentication. The backend does not enforce recipe ownership or owner-only authorization, and foodstuff creator/change provenance is not yet represented. The current private-network deployment boundary should not be mistaken for those controls.
 
 ## Near-term focus
 
-- Complete and verify the integrated recipe-chat and proposal-to-draft flow
+- Manually verify the implemented recipe-chat and proposal-to-draft foundation; deferred improvements are tracked in the architecture note
 - Add history browsing and a draft-versus-active comparison to the existing version lifecycle
 - Implement [[Browser Authentication Foundation]] and then enforce recipe ownership and shared-foodstuff provenance
 - Keep human authentication and machine identities as separate security concerns
