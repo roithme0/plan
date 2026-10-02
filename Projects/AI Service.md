@@ -36,7 +36,7 @@ Implement [[ChatGPT Plan Integration]] as a committed additional model-access mo
 - The backend retains caller context, messages, and generic artifacts in process-local sessions. Completed turns can produce several validated artifacts; there is no database-backed chat history.
 - A provider adapter and generic MCP tool loop are implemented. Service code assigns artifact identifiers, order and timestamps; proposal IDs and base references belong to Kochwiki.
 - The Angular package exposes separate `/ui` and `/conversation` entry points. Kochwiki registers recipe and foodstuff templates and advertises their schemas and metadata. JSON is an explicit presentation capability.
-- Tool-result retention across turns remains a high-priority follow-up. It and streaming are now prerequisites for [[ChatGPT Plan Integration]]; neither is claimed implemented. Cancellation, broader tool-status presentation and the general model-backed agent remain follow-up work.
+- Tool-result retention across turns remains a high-priority follow-up. It and streaming are now prerequisites for [[ChatGPT Plan Integration]]; neither is claimed implemented. Live tool-call transparency is committed planned work alongside streaming: expose understandable actions and safe input summaries, execution progress and outcomes through the shared conversation/UI boundary; see [[Shared Agent Chat UI and Domain Rendering]]. This applies to API-key and ChatGPT-plan access. Cancellation and the general model-backed agent remain follow-up work.
 - Kochwiki and the AI Service currently operate within a private-network boundary. Authentication, delegated user context, and service authorization are required before exposing the integration more broadly.
 
 ## Web information retrieval direction

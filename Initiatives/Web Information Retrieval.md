@@ -27,6 +27,7 @@ Web information retrieval is not implemented in the planning baseline. AI Servic
 - Prefer the built-in Responses API `web_search` tool with a supported model. OpenAI executes this hosted tool; it does not require a separate search MCP server or a locally implemented search execution loop.
 - Define agent guidance for when to search: explicit research requests, current or changing information, and questions requiring external evidence. Let the model choose whether to search for ordinary turns.
 - Preserve source URLs and citation annotations through the conversation boundary and show clearly visible, clickable citations in the chat UI.
+- Surface hosted search activity while the turn runs through the shared tool-call transparency requirement in [[Shared Agent Chat UI and Domain Rendering]]. Show available provider progress and outcomes without implying visibility into every internal search step.
 - Account for additional search usage and costs; make unsupported provider/model combinations and search failures clear.
 - Treat retrieved content as external evidence, not agent instructions. Kochwiki's existing validation and explicit proposal/draft saving continue to govern any resulting domain changes.
 

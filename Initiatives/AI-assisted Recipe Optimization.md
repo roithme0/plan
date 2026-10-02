@@ -78,7 +78,9 @@ streaming/cancellation and advanced UI shortcuts can be scoped separately.
 [[ChatGPT Plan Integration]] is now a committed provider follow-up for this recipe
 workflow and the universal agent. Streaming and tool-result retention are
 prerequisites for its subscription-backed path; the domain workflow remains owned
-by Kochwiki.
+by Kochwiki. The streaming scope also includes live tool-call transparency as defined
+in [[Shared Agent Chat UI and Domain Rendering]], so searches and other tool actions
+are understandable before the final answer in both provider modes.
 Authentication, delegated authorization and auditing remain required for wider
 production exposure; they are not blockers for developing the current private
 MVP foundation. [[Browser Authentication Foundation]] and
