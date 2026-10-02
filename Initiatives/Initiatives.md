@@ -16,6 +16,7 @@ Initiatives are time-bounded outcomes involving one or more [[Home#Ecosystem|pro
 - [[Browser Authentication Foundation]]
 - [[Recipe and Ingredient Images]]
 - [[Universal Agent Foundation]]
+- [[ChatGPT Plan Integration]]
 - [[Read-only Project Access for the Agent]]
 
 ## Exploring

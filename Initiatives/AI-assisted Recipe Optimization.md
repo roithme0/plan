@@ -75,11 +75,16 @@ visualization and reconciliation of temporary definitions with later catalogue w
 
 Skills and recipe-quality evaluation, durable conversation/outcome storage,
 streaming/cancellation and advanced UI shortcuts can be scoped separately.
+[[ChatGPT Plan Integration]] is now a committed provider follow-up for this recipe
+workflow and the universal agent. Streaming and tool-result retention are
+prerequisites for its subscription-backed path; the domain workflow remains owned
+by Kochwiki.
 Authentication, delegated authorization and auditing remain required for wider
 production exposure; they are not blockers for developing the current private
 MVP foundation. [[Browser Authentication Foundation]] and
 [[Controlled Agent Actions]] describe that longer-term direction.
 
-No additional capability slice is selected now. Manual usage should inform the
-next implementation priority. [[Recipe Optimization Skills and Kochwiki Tools]]
+No additional recipe-domain capability slice is selected now. The subscription
+provider slice is selected in [[ChatGPT Plan Integration]]; manual usage should
+inform further domain implementation priorities. [[Recipe Optimization Skills and Kochwiki Tools]]
 records the scope expansion that led to this architecture.

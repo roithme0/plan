@@ -53,6 +53,7 @@ See [[System Overview]].
 - [[Browser Authentication Foundation]] — planned
 - [[Recipe Versioning and Drafts]] — active
 - [[AI-assisted Recipe Optimization]] — active
+- [[ChatGPT Plan Integration]] — planned; recipe conversations reuse the AI Service provider connection
 - [[Recipe and Ingredient Images]] — planned
 - [[Read-only Project Access for the Agent]] — planned
 - [[Controlled Agent Actions]] — exploring
