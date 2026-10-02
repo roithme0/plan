@@ -27,12 +27,16 @@ The backend and Angular chat package are separately consumable in the first Koch
 
 Keep model- and provider-specific concerns behind stable service interfaces. Domain services continue to own their data, validation, mutations, and domain-specific rules.
 
+## ChatGPT plan access direction
+
+Implement [[ChatGPT Plan Integration]] as a committed additional model-access mode for recipe conversations and the universal agent. Users connect their Plus/Pro account through OAuth and use eligible Responses requests against their included allowance; API-key access remains an explicit alternative. Streaming and complete caller-supplied conversation/tool context are prerequisites for this provider path. Provider consent remains separate from application login and domain authorization. This is planned work under the agreed private, non-commercial deployment assumption, not a claim of current support.
+
 ## Foundation and remaining direction
 
 - The backend retains caller context, messages, and generic artifacts in process-local sessions. Completed turns can produce several validated artifacts; there is no database-backed chat history.
 - A provider adapter and generic MCP tool loop are implemented. Service code assigns artifact identifiers, order and timestamps; proposal IDs and base references belong to Kochwiki.
 - The Angular package exposes separate `/ui` and `/conversation` entry points. Kochwiki registers recipe and foodstuff templates and advertises their schemas and metadata. JSON is an explicit presentation capability.
-- Tool-result retention across turns is a high-priority deferred follow-up. Streaming, cancellation, tool-status presentation and the general model-backed agent remain later work.
+- Tool-result retention across turns remains a high-priority follow-up. It and streaming are now prerequisites for [[ChatGPT Plan Integration]]; neither is claimed implemented. Cancellation, broader tool-status presentation and the general model-backed agent remain follow-up work.
 - Kochwiki and the AI Service currently operate within a private-network boundary. Authentication, delegated user context, and service authorization are required before exposing the integration more broadly.
 
 ## Home Assistant connector direction
@@ -48,6 +52,7 @@ See [[System Overview]].
 - [[AI-assisted Recipe Optimization]] — active
 - [[Recipe and Ingredient Images]] — planned
 - [[Universal Agent Foundation]] — planned
+- [[ChatGPT Plan Integration]] — planned
 - [[Read-only Project Access for the Agent]] — planned
 - [[Controlled Agent Actions]] — exploring
 - [[Photo-assisted Foodstuff Nutrition Entry]] — exploring
