@@ -54,6 +54,7 @@ See [[System Overview]].
 - [[Recipe Versioning and Drafts]] — active
 - [[AI-assisted Recipe Optimization]] — active
 - [[ChatGPT Plan Integration]] — planned; recipe conversations reuse the AI Service provider connection
+- [[Web Information Retrieval]] — planned; recipe conversations reuse AI Service web retrieval with source citations
 - [[Recipe and Ingredient Images]] — planned
 - [[Read-only Project Access for the Agent]] — planned
 - [[Controlled Agent Actions]] — exploring

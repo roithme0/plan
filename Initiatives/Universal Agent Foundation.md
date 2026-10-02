@@ -26,6 +26,7 @@ The AI Service `staging` branch already has a generic, session-based conversatio
 - Answer generic questions using the configured AI capabilities
 - Reuse the committed [[ChatGPT Plan Integration]] provider mode for subscription-backed inference, alongside explicit API-key access; its OAuth and streaming work is a separate reusable initiative
 - Retrieve live weather information through a tool or service
+- Reuse [[Web Information Retrieval]] for external research as a separately committed capability; prefer OpenAI Web Search after checking provider/model support
 - Make tool failures or unavailable live data clear to the user
 - Establish a tool interface that can later support project connectors
 - Keep the initial conversation boundary compatible with future typed domain artifacts without requiring their renderer system now
