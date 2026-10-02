@@ -43,6 +43,19 @@ The future streaming direction is an ordered stream of content and lifecycle eve
 
 For example, a recipe proposal can be identified as a typed artifact associated with the recipe version or earlier proposal on which it is based. The exact domain schema belongs to the corresponding integration.
 
+## Committed streaming requirement: tool-call transparency
+
+Streaming must make the assistant's observable actions understandable while a turn is running, as well as delivering conversational text. This requirement is committed for Kochwiki and the universal agent, independent of the still-exploratory long-term packaging choices and of whether model access uses a ChatGPT plan or an API key. It remains planned, not implemented.
+
+- Show each tool call as a compact activity entry with a human-readable tool/action label and a safe summary of its inputs, such as the foodstuff being searched for.
+- Update entries live as a call is being prepared, is executing, and completes, fails or is cancelled. Distinguish streamed argument preparation from actual execution; partial arguments must not appear as an executed action.
+- Show a concise outcome or error and allow useful input/result details to be expanded. Keep credentials and sensitive payload fields out of user-facing events.
+- Use stable turn/call identifiers and ordering from the runtime so repeated and parallel calls remain distinguishable and updates attach to the correct entry. Preserve completed activity entries in the current conversation view.
+- AI Service maps provider tool events and its own MCP/function execution lifecycle into shared UI events. Hosted tools, including [[Web Information Retrieval]], use the progress actually exposed by the provider; do not invent unavailable intermediate steps.
+- Present observable tool activity, not private model reasoning. Tool visibility does not change authorization, confirmation or Kochwiki's explicit proposal-saving workflow.
+
+Acceptance: during a multi-tool recipe or generic-agent turn, activity is visible before the final answer, each call reaches the correct terminal state, parallel/repeated calls do not overwrite one another, and a tool failure is shown alongside any subsequent assistant response. Detailed event schemas and verification belong in the service repositories.
+
 ## Renderer registry
 
 The shared chat UI should expose a renderer registry or equivalent host-extension point.

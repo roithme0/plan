@@ -29,7 +29,7 @@ This integration is not implemented. The existing generic provider adapter and c
 - Implement the documented Sign in with ChatGPT OAuth flow with PKCE, account consent and a persistent, opaque host identifier. Store the issued client registration and credentials securely, refresh tokens, and handle expiry, revocation, reconnection and disconnect.
 - Support the selected self-hosted deployment using the documented VM credential flow where appropriate. Bind the connection to the intended application user and selected ChatGPT account/workspace.
 - Request model inference through the public Responses API using the OAuth access token as the bearer credential. Discover account-available models rather than assuming the ordinary API-key model catalog applies.
-- Implement streaming consumption and carry relevant progress/results through the existing conversation/UI boundary. Keep recipe artifacts and explicit proposal saving compatible with the existing workflow.
+- Implement streaming consumption and carry text plus live tool-call activity through the existing conversation/UI boundary. Follow the committed tool-call transparency requirement in [[Shared Agent Chat UI and Domain Rendering]]: understandable action/input summaries, preparation versus execution, and completion/error/cancellation outcomes. Keep recipe artifacts and explicit proposal saving compatible with the existing workflow.
 - Distinguish provider connection from application login: this grants model access and usage consent, not Kochwiki ownership permissions or access to ChatGPT conversation history/memories. Preserve [[DEC-002 External OIDC Provider for Human Authentication]].
 - Surface connection, model availability and usage-limit failures clearly. Never silently switch an exhausted plan to API-key billing. Any fallback or use of additional paid credits requires an explicit user choice.
 
@@ -55,6 +55,7 @@ The current documented flow is a preview; keep the adapter requirements in servi
 
 - A connected Plus/Pro account completes a streamed recipe conversation and a generic agent turn through Responses using OAuth credentials without an API key for those requests.
 - A multi-turn MCP-backed conversation preserves the tool context required for refinement and delivers the same validated domain artifacts and explicit save behavior.
+- Tool activity appears while a turn runs, before its final answer; repeated/parallel calls stay distinct and execution outcomes and failures are visible. Provider HTTP streaming alone does not satisfy this UI requirement.
 - Token refresh and reconnection work for the selected deployment; credentials remain isolated from frontend/domain payloads and other users.
 - Unavailable models, revoked connections and exhausted allowances produce actionable errors without automatic paid fallback.
 - API-key mode remains usable as an explicit alternative, and existing application authentication/authorization boundaries are preserved.
@@ -64,7 +65,7 @@ The current documented flow is a preview; keep the adapter requirements in servi
 - Where should connection management be presented: Kochwiki settings, a shared AI Service surface, or both?
 - How should the existing application session map to a provider account during the private MVP and later authenticated use?
 - Which documented local/self-hosted registration and credential flow fits the actual deployment topology?
-- Which current request fields and tool schemas need adaptation, and which streaming events should the chat UI expose first?
+- Which current request fields and tool schemas need adaptation, and which concrete events and safe summaries implement the agreed tool-call transparency requirement?
 
 ## Next step
 
