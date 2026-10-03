@@ -1,7 +1,7 @@
 ---
 type: project
 status: active
-last_reviewed: 2026-10-02
+last_reviewed: 2026-10-03
 ---
 
 # Kochwiki
@@ -59,6 +59,7 @@ See [[System Overview]].
 - [[Read-only Project Access for the Agent]] — planned
 - [[Controlled Agent Actions]] — exploring
 - [[Photo-assisted Foodstuff Nutrition Entry]] — exploring
+- [[Visual Kochwiki Workflows and Cooking Plans]] — exploring; user-facing process explanations and visual meal preparation plans, with Excalidraw MCP as a candidate
 
 ## Related ideas
 

@@ -24,3 +24,4 @@ Initiatives are time-bounded outcomes involving one or more [[Home#Ecosystem|pro
 
 - [[Controlled Agent Actions]]
 - [[Photo-assisted Foodstuff Nutrition Entry]]
+- [[Visual Kochwiki Workflows and Cooking Plans]]
