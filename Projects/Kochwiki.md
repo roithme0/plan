@@ -1,7 +1,7 @@
 ---
 type: project
 status: active
-last_reviewed: 2026-10-03
+last_reviewed: 2026-10-07
 ---
 
 # Kochwiki
@@ -53,7 +53,7 @@ See [[System Overview]].
 - [[Browser Authentication Foundation]] — planned
 - [[Recipe Versioning and Drafts]] — active
 - [[AI-assisted Recipe Optimization]] — active
-- [[ChatGPT Plan Integration]] — planned; recipe conversations reuse the AI Service provider connection
+- [[ChatGPT Plan Integration]] — blocked; browser-only desktop/mobile plan connection requires a supported remote callback, unavailable in the documented public route. API-key recipe chat remains available.
 - [[Web Information Retrieval]] — planned; recipe conversations reuse AI Service web retrieval with source citations
 - [[Recipe and Ingredient Images]] — planned
 - [[Read-only Project Access for the Agent]] — planned

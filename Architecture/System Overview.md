@@ -1,7 +1,7 @@
 ---
 type: architecture
 status: draft
-last_reviewed: 2026-10-02
+last_reviewed: 2026-10-07
 ---
 
 # System Overview
@@ -68,7 +68,7 @@ flowchart TB
 - Agent integrations begin read-only. Actions are added deliberately with scoped authorization, validation, and auditability.
 - Live or changing information, such as weather, comes from a tool or service rather than model memory.
 - Provider-specific AI and identity details remain behind stable service boundaries where practical.
-- [[ChatGPT Plan Integration]] is committed planned model access within AI Service for recipe conversations and the universal agent. OAuth consent to consume a ChatGPT allowance is separate from application identity and domain authorization; API-key access remains an explicit alternative. MCP execution stays in AI Service for this provider mode.
+- [[ChatGPT Plan Integration]] remains desired model access within AI Service, but its browser-only desktop/mobile MVP is blocked on supported remote-callback plan authorization. The public flow requires a local callback listener; a helper does not meet the requirement, and partner access is not viable for this personal deployment. OAuth identity login alone does not grant ChatGPT-plan use. API-key chat remains available; MCP execution stays in AI Service. See the initiative for the blocker and revisit condition.
 
 ## Direction of travel
 

@@ -1,7 +1,7 @@
 ---
 type: project
 status: active
-last_reviewed: 2026-10-02
+last_reviewed: 2026-10-07
 ---
 
 # AI Service
@@ -14,7 +14,7 @@ Provide shared AI capabilities and an agent-based interface across projects in t
 
 The service runs a generic session-based conversation API with a configured MCP-backed Kochwiki agent and a deterministic demo agent. It owns bounded tool orchestration, generic validation, ephemeral conversation state and artifact delivery. Kochwiki owns domain tools, instructions and proposals; its frontend uses the service through restricted gateway routes. See [[Recipe Agent Capability and Proposal Outline]].
 
-The service also publishes the reusable Angular `@roithme0/chat-ui` package. Kochwiki consumes its UI and conversation entry points and supplies a recipe artifact renderer. A universal agent for generic questions or live weather is not implemented. Streaming, cancellation, durable chat history, and production-grade cross-service authorization remain open.
+The service also publishes the reusable Angular `@roithme0/chat-ui` package. Kochwiki consumes its UI and conversation entry points and supplies a recipe artifact renderer. A universal agent for generic questions or live weather is not implemented. Streaming and ordered model/tool history are implemented in AI Service; cancellation, durable chat history, and production-grade cross-service authorization remain open.
 
 ## Direction
 
@@ -29,14 +29,16 @@ Keep model- and provider-specific concerns behind stable service interfaces. Dom
 
 ## ChatGPT plan access direction
 
-Implement [[ChatGPT Plan Integration]] as a committed additional model-access mode for recipe conversations and the universal agent. Users connect their Plus/Pro account through OAuth and use eligible Responses requests against their included allowance; API-key access remains an explicit alternative. Streaming and complete caller-supplied conversation/tool context are prerequisites for this provider path. Provider consent remains separate from application login and domain authorization. This is planned work under the agreed private, non-commercial deployment assumption, not a claim of current support.
+[[ChatGPT Plan Integration]] remains a desired additional model-access mode, but is blocked as of 2026-10-07. The MVP requires browser-only plan connection from desktop and mobile to the LAN-hosted Kochwiki chat, with AI Service owning token exchange, persistent per-user credentials and refresh. The documented public plan-access flow requires a callback listener on the user's computer; local helpers and credential-transfer workflows do not meet the requirement. Partner integration is not viable for this personal, non-commercial use case, and website identity login alone does not establish permission to consume the ChatGPT allowance. See the initiative for evidence and the condition for revisiting implementation.
+
+The configured API key remains the baseline for users without a connected plan. Plan failure must never trigger automatic paid fallback. Ordered history and streaming are delivered; failure reconciliation and deliberate retry remain deferred. Provider consent is separate from application identity and domain authorization.
 
 ## Foundation and remaining direction
 
 - The backend retains caller context, messages, and generic artifacts in process-local sessions. Completed turns can produce several validated artifacts; there is no database-backed chat history.
 - A provider adapter and generic MCP tool loop are implemented. Service code assigns artifact identifiers, order and timestamps; proposal IDs and base references belong to Kochwiki.
 - The Angular package exposes separate `/ui` and `/conversation` entry points. Kochwiki registers recipe and foodstuff templates and advertises their schemas and metadata. JSON is an explicit presentation capability.
-- Tool-result retention across turns remains a high-priority follow-up. It and streaming are now prerequisites for [[ChatGPT Plan Integration]]; neither is claimed implemented. Live tool-call transparency is committed planned work alongside streaming: expose understandable actions and safe input summaries, execution progress and outcomes through the shared conversation/UI boundary; see [[Shared Agent Chat UI and Domain Rendering]]. This applies to API-key and ChatGPT-plan access. Cancellation and the general model-backed agent remain follow-up work.
+- Ordered model/tool history, retained execution outcomes and accepted artifacts, and end-to-end streaming are implemented in AI Service. The UI exposes complete messages, tool preparation/execution/outcomes, and artifacts; token fragments, richer action details, cancellation, observation reconciliation, and deliberate retry remain later work. These foundations do not resolve the external authorization blocker in [[ChatGPT Plan Integration]].
 - Kochwiki and the AI Service currently operate within a private-network boundary. Authentication, delegated user context, and service authorization are required before exposing the integration more broadly.
 
 ## Web information retrieval direction
@@ -56,7 +58,7 @@ See [[System Overview]].
 - [[AI-assisted Recipe Optimization]] — active
 - [[Recipe and Ingredient Images]] — planned
 - [[Universal Agent Foundation]] — planned
-- [[ChatGPT Plan Integration]] — planned
+- [[ChatGPT Plan Integration]] — blocked; browser-only remote-callback plan authorization is not established
 - [[Web Information Retrieval]] — planned
 - [[Read-only Project Access for the Agent]] — planned
 - [[Controlled Agent Actions]] — exploring
