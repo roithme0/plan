@@ -1,7 +1,7 @@
 ---
 type: project
 status: active
-last_reviewed: 2026-10-07
+last_reviewed: 2026-10-09
 ---
 
 # Kochwiki
@@ -63,6 +63,7 @@ See [[System Overview]].
 
 ## Related ideas
 
+- [[ChatGPT Access to Kochwiki via MCP]] — uncommitted option for direct recipe access in ChatGPT, including mobile, through a personal MCP plugin
 - [[Foodstuff History and Duplicate Management]]
 - [[Semantic Recipe and Foodstuff Search in the UI]] — exploring reuse of planned semantic retrieval for ordinary UI search
 
