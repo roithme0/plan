@@ -1,7 +1,7 @@
 ---
 type: project
 status: active
-last_reviewed: 2026-10-07
+last_reviewed: 2026-10-09
 ---
 
 # AI Service
@@ -43,7 +43,7 @@ The configured API key remains the baseline for users without a connected plan. 
 
 ## Web information retrieval direction
 
-Implement [[Web Information Retrieval]] as committed planned work for recipe conversations and the universal agent. Prefer OpenAI's hosted Web Search in the Responses API for obtaining external information, with agent search guidance, clickable source citations and search usage handling. Provider/model support, including the ChatGPT-plan path, must be checked independently. Browser UI automation is outside this initiative.
+[[Web Information Retrieval]] has an implemented hosted OpenAI Web Search MVP on staging, enabled for the Kochwiki agent through the shared model runtime. Search is provider-executed and bounded per turn; hosted activity and continuation history are retained. Citation metadata remains internal and clickable source rendering is deferred. Universal-agent rollout, usage presentation and provider/model support, including the ChatGPT-plan path, remain open. Browser UI automation is outside this initiative.
 
 ## Home Assistant connector direction
 
@@ -59,8 +59,8 @@ See [[System Overview]].
 - [[Recipe and Ingredient Images]] — planned
 - [[Universal Agent Foundation]] — planned
 - [[ChatGPT Plan Integration]] — blocked; browser-only remote-callback plan authorization is not established
-- [[Web Information Retrieval]] — planned
-- [[Read-only Project Access for the Agent]] — planned
+- [[Web Information Retrieval]] — active; hosted OpenAI search implemented for the Kochwiki agent, clickable citations remain open
+- [[Read-only Project Access for the Agent]] — active; Kochwiki MCP reads and selected writes implemented, universal-agent and Home Assistant rollout remain open
 - [[Controlled Agent Actions]] — exploring
 - [[Photo-assisted Foodstuff Nutrition Entry]] — exploring
 

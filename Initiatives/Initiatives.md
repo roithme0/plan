@@ -10,15 +10,18 @@ Initiatives are time-bounded outcomes involving one or more [[Home#Ecosystem|pro
 
 - [[Recipe Versioning and Drafts]]
 - [[AI-assisted Recipe Optimization]]
+- [[Web Information Retrieval]] — hosted-search MVP delivered; citations and universal-agent rollout remain open
+- [[Read-only Project Access for the Agent]] — Kochwiki delivered, including selected writes; Home Assistant and universal-agent rollout remain open
 
 ## Planned
 
 - [[Browser Authentication Foundation]]
 - [[Recipe and Ingredient Images]]
 - [[Universal Agent Foundation]]
+
+## Blocked
+
 - [[ChatGPT Plan Integration]]
-- [[Web Information Retrieval]]
-- [[Read-only Project Access for the Agent]]
 
 ## Exploring
 

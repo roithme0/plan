@@ -1,7 +1,7 @@
 ---
 type: initiative
 status: exploring
-last_reviewed: 2026-09-10
+last_reviewed: 2026-10-09
 projects:
   - "[[AI Service]]"
   - "[[Kochwiki]]"
@@ -13,6 +13,12 @@ projects:
 ## Intended outcome
 
 The universal agent can perform selected, user-requested actions through project APIs, such as turning on an allowed light, without receiving unrestricted access.
+
+## Current state
+
+Selected Kochwiki writes are already implemented through the MCP-backed Kochwiki agent: foodstuff creation and updates, in-memory recipe proposals, and explicit saving of a proposal as a draft, including atomic temporary-foodstuff creation. Saving through chat and the artifact button uses the same Kochwiki save service. See [[Read-only Project Access for the Agent]] for the reviewed implementation evidence.
+
+This domain workflow precedes the broader universal-agent initiative. Its current private-network and selected-user boundary does not establish authenticated delegated authorization, owner-only enforcement, comprehensive action auditing, or an enforced general confirmation policy. Home Assistant actions remain unimplemented in this planning baseline. The initiative remains exploratory for that broader controlled-action outcome.
 
 ## Motivation
 
@@ -60,4 +66,4 @@ Move from an informational assistant to a useful ecosystem interface while retai
 
 ## Next step
 
-Defer implementation until the read-only integrations and reliable human authentication are working; then define one low-risk action and its complete authorization and audit path.
+Build on the delivered Kochwiki writes rather than planning them as a first implementation. Establish authenticated delegated authority, scoped action permissions, auditing and confirmation behavior before extending access beyond the trusted deployment; evaluate Home Assistant actions after its read connector is established.
