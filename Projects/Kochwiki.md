@@ -54,10 +54,9 @@ See [[System Overview]].
 - [[Recipe Versioning and Drafts]] — active
 - [[AI-assisted Recipe Optimization]] — active
 - [[ChatGPT Plan Integration]] — blocked; browser-only desktop/mobile plan connection requires a supported remote callback, unavailable in the documented public route. API-key recipe chat remains available.
-- [[Web Information Retrieval]] — planned; recipe conversations reuse AI Service web retrieval with source citations
+- [[Web Information Retrieval]] — active; hosted OpenAI search implemented for the Kochwiki agent, clickable citations remain open
 - [[Recipe and Ingredient Images]] — planned
-- [[Read-only Project Access for the Agent]] — planned
-- [[Controlled Agent Actions]] — exploring
+- [[Agent Access to Kochwiki and Home Assistant]] — active; Kochwiki MCP reads and selected writes implemented, universal-agent and Home Assistant rollout remain open
 - [[Photo-assisted Foodstuff Nutrition Entry]] — exploring
 - [[Visual Kochwiki Workflows and Cooking Plans]] — exploring; user-facing process explanations and visual meal preparation plans, with Excalidraw MCP as a candidate
 

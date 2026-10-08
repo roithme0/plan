@@ -1,7 +1,7 @@
 ---
 type: initiative
-status: planned
-last_reviewed: 2026-10-02
+status: active
+last_reviewed: 2026-10-09
 projects:
   - "[[AI Service]]"
   - "[[Kochwiki]]"
@@ -11,7 +11,7 @@ projects:
 
 ## Intended outcome
 
-Recipe conversations in Kochwiki and the universal agent can obtain external information from the web when needed. This is committed planned work, not an exploratory idea. OpenAI's built-in Web Search in the Responses API is the preferred initial implementation; final provider selection follows a compatibility check.
+Recipe conversations in Kochwiki and the universal agent can obtain external information from the web when needed. The initial capability is implemented using OpenAI's hosted Web Search in the Responses API. Citation presentation and rollout into a future universal agent remain open.
 
 ## Motivation
 
@@ -19,7 +19,11 @@ Let the agent research information beyond saved project data and model memory, i
 
 ## Current state
 
-Web information retrieval is not implemented in the planning baseline. AI Service already has a generic provider adapter and conversation/tool runtime; implementation details remain authoritative in its service repository.
+The hosted-search MVP is implemented on AI Service's `staging` branch, reviewed on 2026-10-09. The configured Kochwiki model agent enables `WebSearchConfig`; the generic model runtime advertises `web_search` to OpenAI, which executes the hosted tool. This does not require a search MCP server.
+
+The model chooses when to search. A separate per-turn budget defaults to sixteen hosted calls, including page-open/find actions. Subsequent requests omit search once the allowance is exhausted while other tools can continue. Hosted search outcomes are retained in model history and exposed as ordinary `web_search` timeline activity.
+
+The backend README explicitly defers citation rendering: source/citation metadata remains internal, so clickable source citations are not yet delivered through the public chat contract. A general universal agent is not yet configured; the reusable capability exists, but that rollout and the remaining acceptance criteria below are not complete. Model/account compatibility, subscription-path coverage, and search-specific usage/cost presentation remain to be verified rather than inferred from the API-key implementation.
 
 ## Scope
 
@@ -57,11 +61,20 @@ Web information retrieval is not implemented in the planning baseline. AI Servic
 - Which configured models support the hosted tool, and how should capability availability be exposed?
 - Does the provider mode introduced by [[ChatGPT Plan Integration]] support hosted Web Search? Ordinary API support does not establish subscription-path availability or billing coverage. Verify this independently; keep API-key mode explicit and avoid silent paid fallback.
 - If the subscription path cannot use the hosted tool, should web retrieval initially be limited to API-key mode or use an independently configured search provider through a custom tool/MCP?
-- Which citation and tool-progress fields must pass through the existing conversation/UI contract?
+- How should retained source/citation metadata reach the public conversation contract and clickable chat citations, and what additional hosted progress should the timeline expose?
 
 ## Next step
 
-Inspect AI Service's Responses adapter and chat response contract. Verify model/provider support, enable hosted Web Search for one supported configuration, and validate a research turn with source citations in the recipe chat. Reuse the integration for the universal agent as its generic configuration becomes available.
+Complete citation delivery and clickable source presentation, verify live search behavior and usage handling in the recipe chat, and enable the existing shared capability when the universal agent is configured. Keep ChatGPT-plan compatibility separate from the implemented API-key path.
+
+## Implementation evidence
+
+Reviewed tracked code, documentation, and existing regression coverage on `staging`; those tests and live OpenAI searches were not rerun for this documentation-only update.
+
+- [AI Service hosted search behavior and known limits](https://github.com/roithme0/ai-service/blob/3cff08f9b0e0b0b528de7db6fff7b283dd22f2c0/backend/README.md)
+- [Kochwiki agent enabling hosted search](https://github.com/roithme0/ai-service/blob/3cff08f9b0e0b0b528de7db6fff7b283dd22f2c0/backend/app/agents/wiring.py)
+- [Shared hosted-search/tool loop](https://github.com/roithme0/ai-service/blob/3cff08f9b0e0b0b528de7db6fff7b283dd22f2c0/backend/app/agents/tool_turns.py)
+- [Hosted-search regression coverage](https://github.com/roithme0/ai-service/blob/3cff08f9b0e0b0b528de7db6fff7b283dd22f2c0/backend/tests/test_web_search.py)
 
 ## Sources
 

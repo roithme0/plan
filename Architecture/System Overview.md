@@ -50,7 +50,7 @@ flowchart TB
 ```
 
 - [[Kochwiki]] owns recipes, ingredients, recipe history, and associated media. It may request bounded AI capabilities but remains responsible for validating and persisting results.
-- [[Home Assistant]] owns home state, automation, and execution of home-related actions. Its official MCP Server is the preferred planned interface for AI Service access: selected reads first, controlled actions later; see [[Read-only Project Access for the Agent]].
+- [[Home Assistant]] owns home state, automation, and execution of home-related actions. Its official MCP Server is the preferred planned interface for AI Service access: selected reads first, controlled actions later; see [[Agent Access to Kochwiki and Home Assistant]].
 - [[AI Service]] owns model access, reusable AI operations, agent orchestration, and its service connectors.
 - The universal agent is a capability within the AI Service, not a separate project.
 - The external identity provider authenticates human users for Kochwiki initially and may later provide SSO across additional applications.
