@@ -11,3 +11,4 @@ This index collects uncommitted possibilities. An idea can become an [[Initiativ
 - [[Shared Agent Chat UI and Domain Rendering]]
 - [[Recipe Optimization Skills and Kochwiki Tools]]
 - [[Semantic Recipe and Foodstuff Search in the UI]]
+- [[ChatGPT Access to Kochwiki via MCP]]
