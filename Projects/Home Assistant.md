@@ -1,7 +1,7 @@
 ---
 type: project
 status: active
-last_reviewed: 2026-10-01
+last_reviewed: 2026-10-09
 ---
 
 # Home Assistant
@@ -20,7 +20,7 @@ Remain authoritative for home state and automation while exposing selected data 
 
 ## MCP integration direction
 
-Use the official Home Assistant **Model Context Protocol Server** integration as the preferred connection for [[AI Service]], initially under [[Read-only Project Access for the Agent]]. This is planned integration, not a claim that MCP is enabled on the running instance. It is the server integration; the separate Home Assistant MCP client integration serves the opposite direction.
+Use the official Home Assistant **Model Context Protocol Server** integration as the preferred connection for [[AI Service]], under [[Agent Access to Kochwiki and Home Assistant]], initially with selected reads. This is planned integration, not a claim that MCP is enabled on the running instance. It is the server integration; the separate Home Assistant MCP client integration serves the opposite direction.
 
 ### Available surface
 
@@ -33,7 +33,7 @@ The documented transport is stateless Streamable HTTP at `/api/mcp`, with OAuth 
 - Home Assistant owns entity exposure, home state, and action execution.
 - AI Service uses its generic MCP client/runtime for discovery, instructions, calls, and results; avoid a duplicate custom Home Assistant tool server where the official surface suffices.
 - Begin with selected state queries. Verify the actual read surface and enforce a read-tool allowlist; entity exposure alone does not establish read-only access.
-- Add selected actions later through [[Controlled Agent Actions]], preserving its authorization and audit requirements.
+- Add selected actions later through [[Agent Access to Kochwiki and Home Assistant]], preserving its authorization and audit requirements.
 - Direct connectivity from AI Service within the network can suffice; public internet exposure is not a requirement of this architecture.
 - Home Assistant authentication and represented AI Service user identity need an explicit mapping; a connector token does not establish per-user delegation.
 
@@ -52,8 +52,7 @@ See [[System Overview]].
 
 ## Related initiatives
 
-- [[Read-only Project Access for the Agent]] — planned
-- [[Controlled Agent Actions]] — exploring
+- [[Agent Access to Kochwiki and Home Assistant]] — Home Assistant connector planned; selected reads first, controlled actions later
 
 ## Open questions
 

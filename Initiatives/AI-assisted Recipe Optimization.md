@@ -84,7 +84,7 @@ are understandable before the final answer in both provider modes.
 Authentication, delegated authorization and auditing remain required for wider
 production exposure; they are not blockers for developing the current private
 MVP foundation. [[Browser Authentication Foundation]] and
-[[Controlled Agent Actions]] describe that longer-term direction.
+[[Agent Access to Kochwiki and Home Assistant]] describe that longer-term direction.
 
 No additional recipe-domain capability slice is selected now. The subscription
 provider slice is selected in [[ChatGPT Plan Integration]]; manual usage should

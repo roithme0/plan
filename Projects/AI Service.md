@@ -60,8 +60,7 @@ See [[System Overview]].
 - [[Universal Agent Foundation]] — planned
 - [[ChatGPT Plan Integration]] — blocked; browser-only remote-callback plan authorization is not established
 - [[Web Information Retrieval]] — active; hosted OpenAI search implemented for the Kochwiki agent, clickable citations remain open
-- [[Read-only Project Access for the Agent]] — active; Kochwiki MCP reads and selected writes implemented, universal-agent and Home Assistant rollout remain open
-- [[Controlled Agent Actions]] — exploring
+- [[Agent Access to Kochwiki and Home Assistant]] — active; Kochwiki MCP reads and selected writes implemented, universal-agent and Home Assistant rollout remain open
 - [[Photo-assisted Foodstuff Nutrition Entry]] — exploring
 
 ## Open questions
