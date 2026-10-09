@@ -54,6 +54,10 @@ See [[System Overview]].
 
 - [[Agent Access to Kochwiki and Home Assistant]] — Home Assistant connector planned; selected reads first, controlled actions later
 
+## Related ideas
+
+- [[Sonos MCP for AI Home Control]] — explore a complementary Sonos connector for AI-assisted home audio control; compare with Home Assistant's available audio tools before selecting an approach
+
 ## Open questions
 
 - Which entities and state should the agent initially be allowed to read?
