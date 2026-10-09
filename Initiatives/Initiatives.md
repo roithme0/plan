@@ -15,6 +15,8 @@ Initiatives are time-bounded outcomes involving one or more [[Home#Ecosystem|pro
 
 ## Planned
 
+- [[Training and Nutrition Coordination]] — Training App, Kochwiki, and AI Service; high-level direction
+
 - [[Browser Authentication Foundation]]
 - [[Recipe and Ingredient Images]]
 - [[Universal Agent Foundation]]
