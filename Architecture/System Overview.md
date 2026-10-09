@@ -1,7 +1,7 @@
 ---
 type: architecture
 status: draft
-last_reviewed: 2026-10-07
+last_reviewed: 2026-10-09
 ---
 
 # System Overview
@@ -12,6 +12,7 @@ The ecosystem consists of independently useful services connected through explic
 
 - [[Home Assistant]]
 - [[Kochwiki]]
+- [[Training App]] — planned third application alongside Kochwiki and AI Service
 - [[AI Service]]
 
 An external identity provider is shared infrastructure rather than a domain project.
@@ -54,6 +55,12 @@ flowchart TB
 - [[AI Service]] owns model access, reusable AI operations, agent orchestration, and its service connectors.
 - The universal agent is a capability within the AI Service, not a separate project.
 - The external identity provider authenticates human users for Kochwiki initially and may later provide SSO across additional applications.
+
+## Planned training and nutrition collaboration
+
+[[Training App]] extends the ecosystem with training plans, sessions, and sporting progress. Under [[Training and Nutrition Coordination]], it and Kochwiki should exchange relevant context for the same user's goals, such as muscle building: Kochwiki covers recipe/nutrition context and intended nutrition planning; Training App covers planned and completed training and progress. AI Service can assist across both domains while each application retains its data and validation responsibilities.
+
+The exchange mechanism, shared-goal ownership, and initial scope remain open. Strava is a candidate external activity source, potentially through MCP; no connector has been selected or verified. These are planned relationships and are not part of the current integration described above.
 
 ## Shared principles
 

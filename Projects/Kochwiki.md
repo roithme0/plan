@@ -48,7 +48,11 @@ Remain independently useful for core recipe management while completing the reci
 
 See [[System Overview]].
 
+Participate in [[Training and Nutrition Coordination]] with the planned [[Training App]]: nutrition planning and recipe adaptation should use the same user's sporting goals and relevant training/progress context. The data exchange and nutrition-planning scope remain open.
+
 ## Related initiatives
+
+- [[Training and Nutrition Coordination]] — planned; shared sporting goals, training/nutrition planning, and progress
 
 - [[Browser Authentication Foundation]] — planned
 - [[Recipe Versioning and Drafts]] — active

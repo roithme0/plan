@@ -11,6 +11,7 @@ This is the entry point for navigating the project-planning workspace.
 - [[System Overview]]
 - [[Home Assistant]]
 - [[Kochwiki]]
+- [[Training App]] — planned
 - [[AI Service]]
 
 ## Planning

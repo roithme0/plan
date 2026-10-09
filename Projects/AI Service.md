@@ -53,7 +53,11 @@ Use the official Home Assistant MCP Server through the generic MCP runtime descr
 
 See [[System Overview]].
 
+Support [[Training and Nutrition Coordination]] across [[Kochwiki]] and the planned [[Training App]] through optional AI assistance. Training and nutrition data remain owned by their domain applications; the exchange and orchestration approach remains open.
+
 ## Related initiatives
+
+- [[Training and Nutrition Coordination]] — planned; shared sporting goals, training/nutrition planning, and progress
 
 - [[AI-assisted Recipe Optimization]] — active
 - [[Recipe and Ingredient Images]] — planned
