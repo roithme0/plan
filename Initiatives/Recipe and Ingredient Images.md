@@ -49,3 +49,7 @@ Improve recognition and presentation of recipes and ingredients while keeping im
 ## Next step
 
 Define the general media model and lifecycle within Kochwiki without assuming an AI source.
+
+## Related ideas
+
+- [[Automatic Recipe Step Images]] — automatic Chef selection from a reusable cooking-action image catalogue for preparation steps, with no per-step generation or user editing

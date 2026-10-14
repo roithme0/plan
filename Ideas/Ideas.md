@@ -13,3 +13,4 @@ This index collects uncommitted possibilities. An idea can become an [[Initiativ
 - [[Semantic Recipe and Foodstuff Search in the UI]]
 - [[ChatGPT Access to Kochwiki via MCP]]
 - [[Sonos MCP for AI Home Control]]
+- [[Automatic Recipe Step Images]]
