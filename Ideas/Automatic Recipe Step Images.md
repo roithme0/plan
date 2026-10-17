@@ -32,6 +32,10 @@ Make preparation steps easier to scan and recognize without adding image-editing
 
 This complements [[Recipe and Ingredient Images]] with reusable illustrations for preparation steps. Kochwiki owns the catalogue, step associations, and presentation; Chef provides the selection decision. The image catalogue, integration details, and technical contracts remain open.
 
+## Related ideas
+
+- [[Automatic Foodstuff Categorization]] — another decision-AI mapping use case, assigning foodstuffs to categories
+
 ## Next step
 
 Retain this as an idea. When taken up, agree on a small initial catalogue and evaluate Chef's image-or-no-image choices on representative recipe steps before defining the implementation.
