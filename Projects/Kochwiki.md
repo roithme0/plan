@@ -66,6 +66,7 @@ Participate in [[Training and Nutrition Coordination]] with the planned [[Traini
 
 ## Related ideas
 
+- [[Automatic Recipe Categorization and Tags]] — Jev assigns effort or difficulty levels and tags such as spicy and vegetarian
 - [[Automatic Foodstuff Categorization]] — Jev maps foodstuffs to categories such as vegetables, fruit, and snacks
 - [[Automatic Recipe Step Images]] — Jev selects a generic cooking-action image or no image when recipe steps change
 - [[ChatGPT Access to Kochwiki via MCP]] — uncommitted option for direct recipe access in ChatGPT, including mobile, through a personal MCP plugin

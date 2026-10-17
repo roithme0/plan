@@ -15,3 +15,4 @@ This index collects uncommitted possibilities. An idea can become an [[Initiativ
 - [[Sonos MCP for AI Home Control]]
 - [[Automatic Recipe Step Images]]
 - [[Automatic Foodstuff Categorization]]
+- [[Automatic Recipe Categorization and Tags]]

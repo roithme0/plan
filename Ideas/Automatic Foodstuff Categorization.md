@@ -34,6 +34,10 @@ Organize foodstuffs consistently and reduce manual categorization work, making i
 
 [[Automatic Recipe Step Images]] describes the same general selection pattern for mapping preparation steps to a predefined image catalogue. Here the selection target is a foodstuff category. These remain separate product ideas; a shared implementation is not decided.
 
+## Related ideas
+
+- [[Automatic Recipe Categorization and Tags]] — classifies whole recipes by effort or difficulty and descriptive tags
+
 ## Next step
 
 Retain this as an idea. When taken up, define a small initial category catalogue and evaluate Jev's assignments on representative foodstuffs before deciding implementation details.
